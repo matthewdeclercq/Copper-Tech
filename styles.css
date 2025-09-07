@@ -1,0 +1,172 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: #EEDEBC;
+    color: #333;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.construction-banner {
+    background-color: #333;
+    color: #EEDEBC;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.construction-banner h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #EEDEBC;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.container {
+    text-align: center;
+    max-width: 800px;
+    padding: 5rem 2rem 2rem 2rem;
+    margin: 0 auto;
+}
+
+.logo-section {
+    margin-bottom: 2rem;
+}
+
+.logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.construction-message {
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+h2.subtitle {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.description {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.simple-info {
+    margin-top: 2rem;
+}
+
+.simple-info p {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+.simple-info a {
+    color: #B87333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.simple-info a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    margin-top: 3rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    border-top: 1px solid #ccc;
+}
+
+.footer p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .construction-banner h1 {
+        font-size: 0.9rem;
+    }
+
+    h2.subtitle {
+        font-size: 2.5rem;
+    }
+
+    .description {
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 4rem 1rem 1rem 1rem;
+    }
+
+    .footer {
+        margin-top: 2rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .footer p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .construction-banner h1 {
+        font-size: 0.8rem;
+    }
+
+    h2.subtitle {
+        font-size: 2rem;
+    }
+
+    .logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .container {
+        padding: 3.5rem 1rem 1rem 1rem;
+    }
+
+    .footer {
+        margin-top: 1.5rem;
+        padding: 1rem;
+    }
+
+    .footer p {
+        font-size: 0.7rem;
+    }
+}
