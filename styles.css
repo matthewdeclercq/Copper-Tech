@@ -48,8 +48,7 @@ body {
 }
 
 .logo {
-    width: 120px;
-    height: 120px;
+    width: 400px;
     object-fit: contain;
 }
 
@@ -87,11 +86,11 @@ h2.subtitle {
     font-size: 1rem;
     color: #444;
     margin-bottom: 0.5rem;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .simple-info a {
-    color: #B87333;
+    color: #2E5B3F;
     text-decoration: none;
     font-weight: 500;
 }
