@@ -48,7 +48,8 @@ body {
 }
 
 .logo {
-    width: 400px;
+    width: 80%;
+    max-width: 400px;
     object-fit: contain;
 }
 
@@ -139,33 +140,5 @@ h2.subtitle {
 
     .footer p {
         font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .construction-banner h1 {
-        font-size: 0.8rem;
-    }
-
-    h2.subtitle {
-        font-size: 2rem;
-    }
-
-    .logo {
-        width: 80px;
-        height: 80px;
-    }
-
-    .container {
-        padding: 3.5rem 1rem 1rem 1rem;
-    }
-
-    .footer {
-        margin-top: 1.5rem;
-        padding: 1rem;
-    }
-
-    .footer p {
-        font-size: 0.7rem;
     }
 }
