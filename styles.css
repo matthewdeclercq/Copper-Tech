@@ -352,7 +352,7 @@ strong, b {
 
 .banner-tagline {
     font-size: 1.3rem;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--color-off-white);
     margin: 0;
     opacity: 0.9;
@@ -1051,7 +1051,7 @@ a:focus, button:focus {
     }
 
     .banner-text h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
     /* Typography */
@@ -1198,7 +1198,7 @@ a:focus, button:focus {
 
     /* Banner */
     .banner-text h1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
 
     /* Services */
@@ -1227,5 +1227,38 @@ a:focus, button:focus {
     .why-choose-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 2rem;
+    }
+}
+
+/* ==========================================================================
+   Safari Compatibility
+   ========================================================================== */
+
+/* Respect user accessibility preferences */
+@media screen and (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Ensure good contrast for high contrast mode */
+@media screen and (prefers-contrast: high) {
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .banner {
+        background-color: #f8f8f8;
+    }
+}
+
+/* Safari-specific optimizations for general compatibility */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    body {
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
     }
 }
