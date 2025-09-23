@@ -283,8 +283,8 @@ strong, b {
    ========================================================================== */
 
 .banner {
-    height: 70vh;
-    min-height: 500px;
+    height: 80vh;
+    min-height: 600px;
     background: url('assets/bg.jpg') center/cover no-repeat;
     position: relative;
     display: flex;
@@ -564,7 +564,7 @@ strong, b {
 
 .projects-content {
     padding: 2rem 0 6rem 0;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -572,7 +572,7 @@ strong, b {
 
 .project-showcase {
     margin-bottom: 4rem;
-    padding: 3.5rem;
+    padding: 3rem 2.5rem;
     background: linear-gradient(145deg, var(--color-midnight-light) 0%, var(--color-midnight) 100%);
     border-radius: var(--border-radius-large);
     box-shadow:
@@ -1046,7 +1046,7 @@ a:focus, button:focus {
 
     /* Banner */
     .banner {
-        height: 70vh;
+        height: 75vh;
         background: url('assets/bg_mobile.jpg') center/cover no-repeat;
     }
 
@@ -1105,7 +1105,9 @@ a:focus, button:focus {
     }
 
     .projects-content {
-        padding: 1rem 1rem 3rem 1rem;
+        padding: 1rem 0 3rem 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
     .project-showcase {
@@ -1212,7 +1214,7 @@ a:focus, button:focus {
     }
 
     .project-showcase {
-        padding: 2.5rem 2rem;
+        padding: 2rem 1.5rem;
     }
 
     .project-images {
