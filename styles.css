@@ -283,7 +283,7 @@ strong, b {
    ========================================================================== */
 
 .banner {
-    height: 80vh;
+    height: 70vh;
     min-height: 600px;
     background: url('assets/bg.jpg') center/cover no-repeat;
     position: relative;
@@ -1046,7 +1046,7 @@ a:focus, button:focus {
 
     /* Banner */
     .banner {
-        height: 75vh;
+        height: 85vh;
         background: url('assets/bg_mobile.jpg') center/cover no-repeat;
     }
 
