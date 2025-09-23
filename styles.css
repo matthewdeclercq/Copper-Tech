@@ -423,7 +423,10 @@ strong, b {
     left: 0;
     right: 0;
     height: 4px;
-    background: var(--color-gradient-accent);
+    background: linear-gradient(90deg,
+        var(--color-electric) 0%,
+        var(--color-copper-light) 50%,
+        var(--color-electric) 100%);
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
