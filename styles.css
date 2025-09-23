@@ -1046,7 +1046,7 @@ a:focus, button:focus {
 
     /* Banner */
     .banner {
-        height: 50vh;
+        height: 70vh;
         background: url('assets/bg_mobile.jpg') center/cover no-repeat;
     }
 
