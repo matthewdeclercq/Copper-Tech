@@ -1,10 +1,41 @@
 // ============================================================================
+// Component Loading
+// ============================================================================
+
+async function loadComponent(elementId, componentPath) {
+    try {
+        const response = await fetch(componentPath);
+        const html = await response.text();
+        document.getElementById(elementId).innerHTML = html;
+    } catch (error) {
+        console.error(`Failed to load component ${componentPath}:`, error);
+    }
+}
+
+async function initializeComponents() {
+    // Load the same nav component for all pages (with hamburger menu)
+    const navPath = 'components/nav.html';
+
+    // Load components
+    await Promise.all([
+        loadComponent('nav-placeholder', navPath),
+        loadComponent('footer-placeholder', 'components/footer.html')
+    ]);
+}
+
+// ============================================================================
 // Main Application Logic
 // ============================================================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    await initializeComponents();
+
+    // Add loaded class to body for smooth fade-in
+    document.body.classList.add('loaded');
+
     initializeSmoothScrolling();
     initializeNavigationScroll();
+    initializeMenuOverlay();
     initializeFadeInAnimations();
     initializeImageObserver();
 });
@@ -55,6 +86,47 @@ function initializeNavigationScroll() {
 
         lastScrollTop = scrollTop;
     }, { passive: true });
+}
+
+// ============================================================================
+// Full-Screen Menu Overlay Toggle
+// ============================================================================
+
+function initializeMenuOverlay() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const menuOverlay = document.getElementById('menu-overlay');
+
+    if (menuBtn && menuOverlay) {
+        menuBtn.addEventListener('click', function() {
+            const isActive = menuOverlay.classList.contains('active');
+            menuOverlay.classList.toggle('active');
+            menuBtn.classList.toggle('active');
+            menuBtn.setAttribute('aria-expanded', !isActive);
+
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = isActive ? 'auto' : 'hidden';
+        });
+
+        // Close menu when clicking on overlay (but not on content)
+        menuOverlay.addEventListener('click', function(e) {
+            if (e.target === menuOverlay) {
+                menuOverlay.classList.remove('active');
+                menuBtn.classList.remove('active');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close menu on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && menuOverlay.classList.contains('active')) {
+                menuOverlay.classList.remove('active');
+                menuBtn.classList.remove('active');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
 }
 
 // ============================================================================
