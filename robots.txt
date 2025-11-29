@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Preferred domain
+Host: https://coppertech.co
+
+# Sitemap
+Sitemap: https://coppertech.co/sitemap.xml
