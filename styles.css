@@ -533,7 +533,7 @@ strong, b {
     transform: translateY(-4px);
 }
 
-/* Service card variant - larger padding, white background */
+
 .card--service {
     margin-bottom: 4rem;
     padding: 3rem 2.5rem;
@@ -625,7 +625,6 @@ strong, b {
 }
 
 .service-section {
-    /* Extends base card styles */
     border-radius: var(--border-radius-large);
     margin-bottom: 4rem;
     padding: 3rem 2.5rem;
@@ -1040,10 +1039,10 @@ strong, b {
 }
 
 .why-choose-item {
-    /* Extends base card styles with feature variant properties */
     background: linear-gradient(145deg, var(--color-white-overlay) 0%, rgba(255, 255, 255, 0.05) 100%);
     padding: 2.5rem 2rem;
     border: 1px solid var(--color-white-overlay);
+    border-radius: var(--border-radius);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     text-align: center;
