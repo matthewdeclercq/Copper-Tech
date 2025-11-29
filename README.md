@@ -15,14 +15,24 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 
 - `index.html` - Main homepage showcasing services and company information
 - `military-defense.html` - Dedicated page for military and defense services
-- `styles.css` - Main stylesheet with responsive design and modern UI
-- `script.js` - JavaScript functionality for interactive features
+- `css/` - Modular CSS architecture
+  - `styles.css` - Main stylesheet (imports other modules)
+  - `base.css` - Base styles and resets
+  - `components.css` - Component styles
+  - `layout.css` - Layout and grid systems
+  - `utilities.css` - Utility classes
+- `js/` - JavaScript functionality
+  - `script.js` - Component loading and interactive features
 - `sitemap.xml` - XML sitemap for search engine optimization
 - `CNAME` - GitHub Pages custom domain configuration (coppertech.co)
-- `update-sitemap.js` - Utility script for updating sitemap lastmod dates
+- `build/` - Build utilities
+  - `update-sitemap.js` - Utility script for updating sitemap lastmod dates
 - `components/` - Reusable HTML components
   - `nav.html` - Navigation component
   - `footer.html` - Footer component
+  - `cta.html` - Call-to-action component
+  - `project-cards.html` - Project showcase cards (inlined)
+  - `head-common.html` - Reference for common head elements
 - `assets/` - Images, favicons, and media files
 
 ## SEO Features
@@ -49,8 +59,8 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 The sitemap includes both pages with proper priority and change frequency. To update the last modified dates:
 
 ```bash
-# Run the update script
-node update-sitemap.js
+# Run the update script from the build directory
+node build/update-sitemap.js
 ```
 
 The script automatically updates all `lastmod` dates to today's date and is designed to be run before deployment.
@@ -61,7 +71,7 @@ This site is configured for GitHub Pages deployment with the custom domain `copp
 
 ### Deployment Process
 1. Make your changes
-2. Update the sitemap: `node update-sitemap.js`
+2. Update the sitemap: `node build/update-sitemap.js`
 3. Commit and push changes to the `main` branch
 4. GitHub Pages will automatically deploy the updated site
 
