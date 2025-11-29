@@ -626,6 +626,7 @@ strong, b {
 
 .service-section {
     /* Extends base card styles */
+    border-radius: var(--border-radius-large);
     margin-bottom: 4rem;
     padding: 3rem 2.5rem;
     background: linear-gradient(145deg, var(--color-white) 0%, var(--color-off-white) 100%);
