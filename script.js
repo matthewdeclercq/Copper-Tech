@@ -2,6 +2,10 @@
 // Component Loading
 // ============================================================================
 
+// ============================================================================
+// Component Loading
+// ============================================================================
+
 async function loadComponent(elementId, componentPath) {
     try {
         const response = await fetch(componentPath);
@@ -19,7 +23,8 @@ async function initializeComponents() {
     // Load components
     await Promise.all([
         loadComponent('nav-placeholder', navPath),
-        loadComponent('footer-placeholder', 'components/footer.html')
+        loadComponent('footer-placeholder', 'components/footer.html'),
+        loadComponent('cta-placeholder', 'components/cta.html')
     ]);
 }
 
