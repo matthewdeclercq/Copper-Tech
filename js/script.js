@@ -2,6 +2,27 @@
 // Component Loading
 // ============================================================================
 
+/**
+ * Shared function to fetch HTML content from a file
+ * @param {string} componentPath - Path to the HTML file
+ * @returns {Promise<string>} - The HTML content as a string
+ */
+async function fetchHTML(componentPath) {
+    const response = await fetch(componentPath);
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.text();
+}
+
+/**
+ * Load a component into an element by ID
+ * @param {string} elementId - ID of the target element
+ * @param {string} componentPath - Path to the component HTML file
+ * @returns {Promise<boolean>} - True if successful, false otherwise
+ */
 async function loadComponent(elementId, componentPath) {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -10,35 +31,60 @@ async function loadComponent(elementId, componentPath) {
     }
 
     try {
-        const response = await fetch(componentPath);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const html = await response.text();
+        const html = await fetchHTML(componentPath);
         element.innerHTML = html;
         return true;
     } catch (error) {
         console.error(`Failed to load component ${componentPath}:`, error);
         // Show fallback content if component fails to load
-        element.innerHTML = `<div class="component-error" role="alert" aria-live="polite">Component failed to load. Please refresh the page.</div>`;
+        element.innerHTML = `<div class="component-error" role="alert" aria-live="polite">${AppConfig.messages.componentLoadError}</div>`;
         return false;
     }
 }
 
-async function initializeComponents() {
-    // Load all components in parallel
-    const componentPromises = [
-        loadComponent('nav-placeholder', 'components/nav.html'),
-        loadComponent('footer-placeholder', 'components/footer.html'),
-        loadComponent('cta-placeholder', 'components/cta.html')
-    ];
+/**
+ * Load a project card into a container
+ * @param {string} containerSelector - CSS selector for the container
+ * @param {string} componentPath - Path to the project card HTML file
+ * @returns {Promise<boolean>} - True if successful, false otherwise
+ */
+async function loadProjectCard(containerSelector, componentPath) {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.error(`Container "${containerSelector}" not found`);
+        return false;
+    }
 
-    // Load project cards if placeholder exists
-    const projectCardsPlaceholder = document.getElementById('project-cards-placeholder');
-    if (projectCardsPlaceholder) {
-        componentPromises.push(loadComponent('project-cards-placeholder', 'components/project-cards.html'));
+    try {
+        const html = await fetchHTML(componentPath);
+        container.insertAdjacentHTML('beforeend', html);
+        return true;
+    } catch (error) {
+        console.error(`Failed to load project card ${componentPath}:`, error);
+        // Show fallback content for failed project card
+        const errorHTML = `<div class="component-error" role="alert" aria-live="polite">${AppConfig.messages.projectCardLoadError}</div>`;
+        container.insertAdjacentHTML('beforeend', errorHTML);
+        return false;
+    }
+}
+
+/**
+ * Initialize and load all components
+ * Uses configuration from AppConfig to determine which components to load
+ */
+async function initializeComponents() {
+    // Load all standard components in parallel
+    const componentPromises = Object.entries(AppConfig.components).map(
+        ([elementId, componentPath]) => loadComponent(elementId, componentPath)
+    );
+
+    // Load individual project cards into the container
+    const projectCardsList = document.querySelector(AppConfig.selectors.projectCardsList);
+    if (projectCardsList) {
+        const projectCardPromises = AppConfig.projectCards.map(
+            (componentPath) => loadProjectCard(AppConfig.selectors.projectCardsList, componentPath)
+        );
+        componentPromises.push(...projectCardPromises);
     }
 
     await Promise.all(componentPromises);

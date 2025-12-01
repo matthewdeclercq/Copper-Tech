@@ -22,6 +22,7 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
   - `layout.css` - Layout and grid systems
   - `utilities.css` - Utility classes
 - `js/` - JavaScript functionality
+  - `config.js` - Centralized configuration for components and project cards
   - `script.js` - Component loading and interactive features
 - `sitemap.xml` - XML sitemap for search engine optimization
 - `CNAME` - GitHub Pages custom domain configuration (coppertech.co)
@@ -31,7 +32,8 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
   - `nav.html` - Navigation component
   - `footer.html` - Footer component
   - `cta.html` - Call-to-action component
-  - `project-cards.html` - Project showcase cards (inlined)
+  - `project-navy-pacific.html` - US Navy Pacific Missile Range Facility project card
+  - `project-camper-van.html` - Off-Grid No-Compromise Camper Van project card
   - `head-common.html` - Reference for common head elements
 - `assets/` - Images, favicons, and media files
 
@@ -53,6 +55,32 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 1. Clone the repository
 2. Open `index.html` in your browser for local development
 3. Make changes to HTML, CSS, or JavaScript files as needed
+
+### Adding New Projects
+
+To add a new project card to the homepage:
+
+1. Create a new HTML file in the `components/` directory (e.g., `components/project-example.html`)
+2. The file should contain a single `<article>` element with the class `project-showcase`
+3. Add the file path to the `projectCards` array in `js/config.js`:
+   ```javascript
+   projectCards: [
+       'components/project-navy-pacific.html',
+       'components/project-camper-van.html',
+       'components/project-example.html'  // Add your new project here
+   ]
+   ```
+4. The project will automatically be loaded on the homepage
+
+### Configuration
+
+The `js/config.js` file centralizes all component paths and configuration:
+- **components**: Maps element IDs to component file paths
+- **projectCards**: Array of project card file paths (loaded in order)
+- **selectors**: CSS selectors for containers
+- **messages**: User-facing error messages
+
+Modify this file to add/remove components or update paths without touching the main script.
 
 ### Updating Sitemap
 
