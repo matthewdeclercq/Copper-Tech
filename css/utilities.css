@@ -12,27 +12,157 @@
 .text-dark-gray { color: var(--color-dark-gray); }
 .text-light-gray { color: var(--color-light-gray); }
 
-/* Spacing utilities */
+/* Spacing utilities - Margin */
 .mb-4xl { margin-bottom: var(--spacing-4xl); }
 .mb-3xl { margin-bottom: var(--spacing-3xl); }
 .mb-2xl { margin-bottom: var(--spacing-2xl); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-xs { margin-bottom: var(--spacing-xs); }
+
+.mt-4xl { margin-top: var(--spacing-4xl); }
+.mt-3xl { margin-top: var(--spacing-3xl); }
+.mt-2xl { margin-top: var(--spacing-2xl); }
+.mt-xl { margin-top: var(--spacing-xl); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-xs { margin-top: var(--spacing-xs); }
+
+/* Spacing utilities - Padding */
+.p-4xl { padding: var(--spacing-4xl); }
+.p-3xl { padding: var(--spacing-3xl); }
+.p-2xl { padding: var(--spacing-2xl); }
+.p-xl { padding: var(--spacing-xl); }
+.p-lg { padding: var(--spacing-lg); }
+.p-md { padding: var(--spacing-md); }
+.p-sm { padding: var(--spacing-sm); }
+.p-xs { padding: var(--spacing-xs); }
+
+.py-4xl { padding-top: var(--spacing-4xl); padding-bottom: var(--spacing-4xl); }
+.py-3xl { padding-top: var(--spacing-3xl); padding-bottom: var(--spacing-3xl); }
+.py-2xl { padding-top: var(--spacing-2xl); padding-bottom: var(--spacing-2xl); }
+.py-xl { padding-top: var(--spacing-xl); padding-bottom: var(--spacing-xl); }
+.py-lg { padding-top: var(--spacing-lg); padding-bottom: var(--spacing-lg); }
+.py-md { padding-top: var(--spacing-md); padding-bottom: var(--spacing-md); }
+
+.px-4xl { padding-left: var(--spacing-4xl); padding-right: var(--spacing-4xl); }
+.px-3xl { padding-left: var(--spacing-3xl); padding-right: var(--spacing-3xl); }
+.px-2xl { padding-left: var(--spacing-2xl); padding-right: var(--spacing-2xl); }
+.px-xl { padding-left: var(--spacing-xl); padding-right: var(--spacing-xl); }
+.px-lg { padding-left: var(--spacing-lg); padding-right: var(--spacing-lg); }
+.px-md { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
 
 /* Text alignment */
 .text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+/* Text utilities - Font weight */
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Text utilities - Line height */
+.leading-tight { line-height: 1.2; }
+.leading-normal { line-height: 1.5; }
+.leading-relaxed { line-height: 1.7; }
+.leading-loose { line-height: 2; }
+
+/* Text utilities - Text transform */
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.normal-case { text-transform: none; }
 
 /* Icon sizing */
-.icon-lg { font-size: 2.7rem; }
-.icon-md { font-size: 2.2rem; }
-.icon-sm { font-size: 1.8rem; }
+.icon-lg { font-size: 2.2rem; }
+.icon-md { font-size: 1.8rem; }
+.icon-sm { font-size: 1.4rem; }
+
+/* Hover effect utilities - lift effects removed, using scale effect instead */
+.hover-scale {
+    transition: transform var(--transition-slow) var(--transition-easing);
+}
+
+.hover-scale:hover {
+    transform: scale(1.02);
+}
+
+/* Display utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.items-stretch { align-items: stretch; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-around { justify-content: space-around; }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+.gap-xl { gap: var(--spacing-xl); }
+.gap-2xl { gap: var(--spacing-2xl); }
+
+/* Grid utilities - Additional helpers */
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
 
 /* Grid utilities */
 .grid-auto-fit {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2.5rem;
+    gap: var(--spacing-2xl);
     list-style: none;
     padding: 0;
 }
+
+.grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.grid-3-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.grid-4-col {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+}
+
+/* Width utilities */
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.max-w-full { max-width: 100%; }
+
+/* Position utilities */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+/* Overflow utilities */
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-visible { overflow: visible; }
 
 /* ==========================================================================
    Responsive Design
@@ -43,12 +173,12 @@
     /* Using --breakpoint-sm from base.css */
     /* Base Styles */
     .container {
-        padding: 0 1rem;
+        padding: 0 var(--spacing-md);
     }
 
     /* Navigation */
     .nav-container {
-        padding: 1rem 1rem;
+        padding: var(--spacing-md) var(--spacing-md);
     }
 
     .nav-logo-img {
@@ -56,7 +186,7 @@
     }
 
     .cta-button {
-        padding: 0.5rem 1rem;
+        padding: var(--spacing-xs) var(--spacing-md);
         font-size: 0.9rem;
     }
 
@@ -73,7 +203,7 @@
     /* Typography */
     h2 {
         font-size: 2rem;
-        margin-bottom: 2rem;
+        margin-bottom: var(--spacing-xl);
     }
 
     h3 {
@@ -81,39 +211,31 @@
     }
 
     /* Services */
-    .services {
-        padding: 3rem 0;
+    .section--padded-lg {
+        padding: var(--spacing-3xl) 0;
     }
 
-    .service-section {
-        padding: 2rem 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .service-icon {
-        font-size: 3.2rem;
-    }
-
-    .service-section h3 {
-        font-size: 1.5rem;
-    }
-
-    .service-features {
+    /* Grid layouts - all single column on mobile */
+    .service-features,
+    .project-images,
+    .project-highlights,
+    .why-choose-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-md);
+    }
+
+    /* Ensure placeholder images stack properly on mobile */
+    .project-images:has(.project-image-placeholder) {
+        gap: var(--spacing-md) !important;
     }
 
     .feature-item {
         padding: var(--spacing-md);
     }
 
-    .feature-icon {
-        font-size: 1.8rem;
-    }
-
     /* Projects */
     .projects-header {
-        padding: 2rem 0 1rem 0;
+        padding: var(--spacing-xl) 0 var(--spacing-md) 0;
     }
 
     .projects-header h2 {
@@ -121,44 +243,25 @@
     }
 
     .projects-content {
-        padding: 1rem 0 3rem 0;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: var(--spacing-md) 0 var(--spacing-3xl) 0;
+        padding-left: var(--spacing-md);
+        padding-right: var(--spacing-md);
     }
 
     .project-showcase {
-        padding: 2rem 1.5rem;
-        margin-bottom: 2rem;
+        padding: var(--spacing-xl) var(--spacing-lg);
+        margin-bottom: var(--spacing-xl);
     }
 
     .project-showcase h3 {
         font-size: 1.5rem;
-    }
-
-    .project-images {
-        grid-template-columns: 1fr !important;
-        gap: var(--spacing-md) !important;
-    }
-    
-    /* Ensure placeholder images stack properly on mobile */
-    .project-images:has(.project-image-placeholder) {
-        gap: var(--spacing-md) !important;
     }
     
     /* Ensure images fill full width on mobile */
     .project-image,
     .project-image-placeholder {
         width: 100%;
-    }
-
-    .project-image,
-    .project-image-placeholder {
         height: 140px;
-    }
-
-    .project-highlights {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
     }
 
     .highlight-item {
@@ -166,33 +269,22 @@
         gap: var(--spacing-sm);
     }
 
-    .highlight-icon {
-        font-size: 1.5rem;
-    }
-
     /* Why Choose Section */
-    .why-choose {
-        padding: 3rem 0 5rem 0;
+    .section--padded-lg-bottom-xl {
+        padding: var(--spacing-3xl) 0 var(--spacing-5xl) 0;
     }
 
-    .why-choose h2 {
+    .section--copper-dark h2 {
         font-size: 2rem;
-        margin-bottom: 2rem;
+        margin-bottom: var(--spacing-xl);
     }
 
     .why-choose-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
         margin-bottom: var(--spacing-3xl);
     }
 
     .why-choose-item {
         padding: var(--spacing-xl) var(--spacing-lg);
-    }
-
-    .why-choose-icon {
-        font-size: 2.3rem;
-        margin-bottom: 1rem;
     }
 
     .why-choose-item h3 {
@@ -209,7 +301,7 @@
 
     /* Footer */
     .footer {
-        padding: 1.5rem 0;
+        padding: var(--spacing-lg) 0;
     }
 
     .footer p {
@@ -223,7 +315,7 @@
     /* Using --breakpoint-md from base.css */
     /* Navigation */
     .nav-container {
-        padding: 1.5rem 1.5rem;
+        padding: var(--spacing-lg) var(--spacing-lg);
     }
 
     .nav-logo-img {
@@ -231,7 +323,7 @@
     }
 
     .cta-button {
-        padding: 0.5rem 1rem;
+        padding: var(--spacing-xs) var(--spacing-md);
         font-size: 0.9rem;
     }
 
@@ -240,18 +332,18 @@
         font-size: 2rem;
     }
 
-    /* Services */
+    /* Grid layouts - responsive auto-fit on tablet */
     .service-features {
         grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
     }
 
     /* Projects */
     .projects-content {
-        padding: 1.5rem 1.5rem 4rem 1.5rem;
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-4xl) var(--spacing-lg);
     }
 
     .project-showcase {
-        padding: 2rem 1.5rem;
+        padding: var(--spacing-xl) var(--spacing-lg);
     }
 
     .project-images {
@@ -293,12 +385,6 @@
     
     html {
         scroll-behavior: auto !important;
-    }
-    
-    .card,
-    .service-section,
-    .project-showcase {
-        will-change: auto !important;
     }
 }
 

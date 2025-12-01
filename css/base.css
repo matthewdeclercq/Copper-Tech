@@ -51,6 +51,7 @@
     --color-forest-dark: #1F3D29;
 
     /* Neutral Colors */
+    --color-midnight-dark: #202020;
     --color-midnight: #303030;
     --color-midnight-light: #404040;
     --color-midnight-lighter: #505050;
@@ -67,24 +68,45 @@
     --color-electric-dark: #5BA0D3;
     --color-electric-darker: #3A7FB8;
     --color-accent: #FFD700; /* Gold accent for highlights */
-    --color-success: #28A745;
 
     /* Gradients */
     --color-gradient-primary: linear-gradient(135deg, var(--color-forest) 0%, var(--color-copper) 50%, var(--color-electric-dark) 100%);
     --color-gradient-secondary: linear-gradient(135deg, var(--color-beach) 0%, var(--color-electric) 100%);
     --color-gradient-accent: linear-gradient(135deg, var(--color-copper-light) 0%, var(--color-accent) 100%);
 
-    /* Semi-transparent Colors */
+    /* Semi-transparent Colors - Consolidated overlay system */
+    /* White overlays */
     --color-white-overlay: rgba(255, 255, 255, 0.1);
+    --color-white-overlay-light: rgba(255, 255, 255, 0.05);
+    --color-white-overlay-medium: rgba(255, 255, 255, 0.08);
     --color-white-overlay-strong: rgba(255, 255, 255, 0.2);
+    
+    /* Black overlays */
     --color-black-overlay: rgba(0, 0, 0, 0.15);
-    --color-black-overlay-strong: rgba(0, 0, 0, 0.4);
+    --color-black-overlay-light: rgba(0, 0, 0, 0.05);
+    --color-black-overlay-medium: rgba(0, 0, 0, 0.1);
+    --color-black-overlay-heavy: rgba(0, 0, 0, 0.2);
+    --color-black-overlay-strong: rgba(0, 0, 0, 0.3);
+    
+    /* Copper overlays */
     --color-copper-overlay: rgba(184, 115, 51, 0.1);
     --color-copper-overlay-light: rgba(184, 115, 51, 0.15);
+    --color-copper-overlay-medium: rgba(184, 115, 51, 0.2);
     --color-copper-overlay-strong: rgba(184, 115, 51, 0.3);
+    
+    /* Electric overlays */
     --color-electric-overlay: rgba(135, 206, 235, 0.3);
     --color-electric-glow: rgba(135, 206, 235, 0.5);
+    
+    /* Midnight overlays */
     --color-midnight-transparent: rgba(48, 48, 48, 0.95);
+    --color-midnight-overlay-light: rgba(48, 48, 48, 0.15);
+    --color-midnight-overlay-medium: rgba(48, 48, 48, 0.25);
+    --color-midnight-overlay-heavy: rgba(48, 48, 48, 0.7);
+    
+    /* Brand color overlays */
+    --color-forest-overlay-light: rgba(46, 91, 63, 0.1);
+    --color-beach-overlay-light: rgba(237, 222, 186, 0.1);
 
     /* Shadows & Effects */
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -118,21 +140,17 @@
     --grid-gap-md: var(--spacing-lg);
     --grid-gap-lg: var(--spacing-2xl);
 
-    /* Placeholder Gradients */
-    --gradient-placeholder-primary: linear-gradient(135deg,
-        var(--color-electric) 0%,
-        var(--color-copper) 50%,
-        var(--color-forest-dark) 100%);
-
     /* Card Backgrounds */
     --card-bg-solid: linear-gradient(145deg, var(--color-white) 0%, var(--color-off-white) 100%);
     --card-bg-glass: linear-gradient(145deg, var(--color-white-overlay-light) 0%, rgba(255, 255, 255, 0.02) 100%);
     --card-bg-transparent: transparent;
 
-    /* Section Backgrounds */
+    /* Section Backgrounds - Simplified to use base colors directly */
     --section-bg-beach: var(--color-beach);
+    --section-bg-beach-dark: var(--color-beach-dark);
     --section-bg-forest-dark: var(--color-forest-dark);
     --section-bg-copper-dark: var(--color-copper-dark);
+    --section-bg-midnight-dark: var(--color-midnight-dark);
     --section-bg-gradient-dark: linear-gradient(135deg, var(--color-copper-dark) 0%, var(--color-midnight) 100%);
 
     /* Transition Timings */
@@ -147,18 +165,6 @@
     --animation-duration-base: 0.6s;
     --animation-duration-slow: 0.8s;
 
-    /* Additional rgba Overlays */
-    --color-black-overlay-light: rgba(0, 0, 0, 0.08);
-    --color-black-overlay-medium: rgba(0, 0, 0, 0.2);
-    --color-black-overlay-heavy: rgba(0, 0, 0, 0.3);
-    --color-white-overlay-light: rgba(255, 255, 255, 0.05);
-    --color-white-overlay-medium: rgba(255, 255, 255, 0.08);
-    --color-copper-overlay-medium: rgba(184, 115, 51, 0.2);
-    --color-forest-overlay-light: rgba(46, 91, 63, 0.1);
-    --color-beach-overlay-light: rgba(237, 222, 186, 0.1);
-    --color-midnight-overlay-light: rgba(48, 48, 48, 0.15);
-    --color-midnight-overlay-medium: rgba(48, 48, 48, 0.25);
-    --color-midnight-overlay-heavy: rgba(48, 48, 48, 0.7);
 
     /* Responsive Breakpoints */
     --breakpoint-sm: 768px;
@@ -198,7 +204,7 @@ h2 {
     font-size: 3.5rem;
     color: var(--color-midnight);
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: var(--spacing-4xl);
     position: relative;
     text-shadow: 0 2px 4px var(--color-black-overlay-light);
 }
@@ -219,12 +225,12 @@ h3 {
     font-size: 2rem;
     font-weight: 600;
     color: var(--color-midnight);
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
     line-height: 1.3;
 }
 
 p {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
     font-size: 1.1rem;
     line-height: 1.7;
     color: var(--color-dark-gray);
@@ -242,17 +248,29 @@ strong, b {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 var(--spacing-xl);
 }
 
 /* ==========================================================================
    Animations & Keyframes
    ========================================================================== */
 
+/* Unified fade-in animation with configurable distance */
 @keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp-sm {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -269,18 +287,7 @@ strong, b {
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Fade-in animation for sections and articles */
+/* Fade-in animation for sections and articles - uses fadeInUp-sm */
 section, article {
     opacity: 0;
     transform: translateY(20px);
@@ -290,14 +297,8 @@ section, article {
 section.fade-in, article.fade-in {
     opacity: 1;
     transform: translateY(0);
-    will-change: opacity, transform;
 }
 
-/* Service icons subtle animation */
-.service-icon {
-    animation: fadeInUp var(--animation-duration-slow) ease-out;
-    will-change: opacity, transform;
-}
 
 /* ==========================================================================
    Utilities & Accessibility
@@ -322,12 +323,21 @@ section.fade-in, article.fade-in {
 }
 
 /* Targeted transitions for interactive elements only (performance optimization) */
-a, button, .card, .cta-button, .nav-logo, .menu-btn, .project-image, 
-.overview-image, .feature-item, .highlight-item, .trust-feature {
+a, button {
     transition: border-color var(--transition-base) ease, 
                 box-shadow var(--transition-base) ease,
-                transform var(--transition-base) ease,
                 opacity var(--transition-base) ease;
+}
+
+.nav-logo, .menu-btn {
+    transition: transform var(--transition-base) ease,
+                opacity var(--transition-base) ease;
+}
+
+.card, .cta-button, .feature-item, .project-image, .overview-image, 
+.highlight-item, .trust-feature {
+    transition: transform var(--transition-base) ease,
+                box-shadow var(--transition-base) ease;
 }
 
 /* Prevent flash on page load by ensuring smooth transitions only after load */

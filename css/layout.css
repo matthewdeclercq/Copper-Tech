@@ -18,8 +18,8 @@
     max-width: 1400px;
     width: 97%;
     margin: 0 auto;
-    margin-top: 1rem;
-    padding: 3rem 2rem;
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-3xl) var(--spacing-xl);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,7 +32,7 @@
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--spacing-md);
 }
 
 .nav-container.scrolled {
@@ -94,7 +94,7 @@
     justify-content: center;
     align-items: center;
     gap: 4px;
-    padding: 0.5rem;
+    padding: var(--spacing-xs);
     transition: opacity var(--transition-base) ease;
 }
 
@@ -157,7 +157,7 @@
 
 .overlay-content h2 {
     font-size: 2.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
     color: var(--color-white);
     text-shadow: 0 2px 4px var(--color-black-overlay-strong);
 }
@@ -168,14 +168,14 @@
 }
 
 .menu-list li {
-    margin: 1rem 0;
+    margin: var(--spacing-md) 0;
 }
 
 .menu-list a {
     color: var(--color-white);
     text-decoration: none;
     font-size: 1.5rem;
-    padding: 0.5rem 1rem;
+    padding: var(--spacing-xs) var(--spacing-md);
     transition: color var(--transition-base) ease;
     display: block;
     position: relative;
@@ -255,12 +255,27 @@
     z-index: 1;
 }
 
+/* Banner bottom transition - blends to first section */
+.banner-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--spacing-5xl);
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        var(--color-beach-overlay-light) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
 .banner-content {
     position: relative;
     z-index: 2;
     text-align: center;
     max-width: 1200px;
-    padding: 0 2rem;
+    padding: 0 var(--spacing-xl);
     animation: fadeInUp 1.2s ease-out;
 }
 
@@ -268,14 +283,14 @@
     font-size: 3rem;
     font-weight: 700;
     color: var(--color-white);
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 var(--spacing-lg) 0;
     line-height: 1.1;
     text-shadow: 0 4px 20px var(--color-black-overlay-strong);
     letter-spacing: -0.02em;
 }
 
 .banner-text h1 br {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-xs);
 }
 
 .banner-tagline {
@@ -306,13 +321,16 @@
 
 /* Section background modifiers */
 .section--beach { background: var(--section-bg-beach); }
+.section--beach-dark { background: var(--section-bg-beach-dark); }
 .section--forest-dark { background: var(--section-bg-forest-dark); }
 .section--copper-dark { background: var(--section-bg-copper-dark); }
+.section--midnight-dark { background: var(--section-bg-midnight-dark); }
 .section--gradient-dark { background: var(--section-bg-gradient-dark); }
 
 /* Section padding modifiers */
 .section--padded-xl { padding: var(--spacing-6xl) 0 var(--spacing-4xl) 0; }
-.section--padded-lg { padding: 6rem 0; }
+.section--padded-lg { padding: var(--spacing-6xl) 0; }
+.section--padded-lg-bottom-xl { padding: var(--spacing-6xl) 0 var(--spacing-5xl) 0; }
 .section--padded-md { padding: var(--spacing-6xl) 0 var(--spacing-6xl) 0; }
 .section--padded-none { padding: 0; }
 
@@ -328,24 +346,65 @@
     z-index: 1;
 }
 
+/* Default top transition - blends from previous section */
 .section::before {
     top: -2px;
     background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.1) 0%,
+        transparent 100%);
+}
+
+/* Default bottom transition - blends to next section */
+.section::after {
+    bottom: -2px;
+    background: linear-gradient(to top,
+        rgba(0, 0, 0, 0.1) 0%,
+        transparent 100%);
+}
+
+/* Beach section - blends from banner (dark) to beach */
+.section--beach::before {
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.2) 0%,
+        transparent 100%);
+}
+
+.section--beach::after {
+    background: linear-gradient(to top,
+        var(--color-midnight-overlay-light) 0%,
+        transparent 100%);
+}
+
+/* Beach-dark section - blends from banner (dark) to beach-dark */
+.section--beach-dark::before {
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.2) 0%,
+        transparent 100%);
+}
+
+.section--beach-dark::after {
+    background: linear-gradient(to top,
+        var(--color-midnight-overlay-light) 0%,
+        transparent 100%);
+}
+
+/* Midnight-dark section - blends from beach (light) to midnight */
+.section--midnight-dark::before {
+    background: linear-gradient(to bottom,
+        var(--color-beach-overlay-light) 0%,
+        transparent 100%);
+}
+
+.section--midnight-dark::after {
+    background: linear-gradient(to top,
         var(--color-copper-overlay-light) 0%,
         transparent 100%);
 }
 
-.section::after {
-    bottom: -2px;
-    background: linear-gradient(to top,
-        var(--color-forest-overlay-light) 0%,
-        transparent 100%);
-}
-
-/* Section specific transition overrides */
+/* Gradient-dark section - blends from midnight to gradient */
 .section--gradient-dark::before {
     background: linear-gradient(to bottom,
-        var(--color-forest-overlay-light) 0%,
+        var(--color-midnight-overlay-light) 0%,
         transparent 100%);
 }
 
@@ -355,9 +414,29 @@
         transparent 100%);
 }
 
+/* Forest-dark section - blends from beach to forest */
 .section--forest-dark::before {
     background: linear-gradient(to bottom,
         var(--color-beach-overlay-light) 0%,
+        transparent 100%);
+}
+
+.section--forest-dark::after {
+    background: linear-gradient(to top,
+        var(--color-midnight-overlay-light) 0%,
+        transparent 100%);
+}
+
+/* Copper-dark section - blends appropriately */
+.section--copper-dark::before {
+    background: linear-gradient(to bottom,
+        var(--color-midnight-overlay-light) 0%,
+        transparent 100%);
+}
+
+.section--copper-dark::after {
+    background: linear-gradient(to top,
+        var(--color-midnight-overlay-light) 0%,
         transparent 100%);
 }
 
@@ -367,79 +446,14 @@
     z-index: 2;
 }
 
-/* Legacy section classes - migrated to use unified system */
-.services {
-    /* Equivalent to: section section--beach section--padded-lg */
-    padding: 6rem 0;
-    background: var(--color-beach);
-    position: relative;
-    overflow: hidden;
-}
-
-.services::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: linear-gradient(to bottom,
-        var(--color-copper-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.services::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: linear-gradient(to top,
-        var(--color-forest-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.projects {
-    /* Equivalent to: section section--forest-dark section--padded-none */
-    padding: 0;
-    background: var(--color-forest-dark);
-    position: relative;
-    overflow: hidden;
-}
-
-.projects::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: linear-gradient(to bottom,
-        var(--color-beach-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.why-choose {
-    /* Equivalent to: section section--copper-dark with custom padding */
-    padding: 6rem 0 8rem 0;
-    background: var(--color-copper-dark);
-    position: relative;
-    overflow: hidden;
-}
+/* Legacy section classes - removed, use .section with modifiers instead */
 
 /* ==========================================================================
    Projects Section
    ========================================================================== */
 
 .projects-header {
-    padding: 4rem 0 2rem 0;
+    padding: var(--spacing-4xl) 0 var(--spacing-xl) 0;
     text-align: center;
 }
 
@@ -452,27 +466,30 @@
 }
 
 .projects-content {
-    padding: 2rem 0 6rem 0;
+    padding: var(--spacing-xl) 0 var(--spacing-6xl) 0;
     max-width: 1200px;
     margin: 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: var(--spacing-xl);
+    padding-right: var(--spacing-xl);
 }
 
 .project-showcase {
-    margin-bottom: 4rem;
-    padding: 3rem 2.5rem;
-    background: linear-gradient(145deg, var(--color-midnight-light) 0%, var(--color-midnight) 100%);
+    margin-bottom: var(--spacing-4xl);
+    padding: var(--spacing-3xl) var(--spacing-2xl);
+    background: var(--color-midnight);
     border-radius: var(--border-radius-large);
-    box-shadow:
-        0 20px 40px var(--color-black-overlay-heavy),
-        0 0 0 1px var(--color-white-overlay-strong),
-        inset 0 1px 0 var(--color-white-overlay-strong);
+    box-shadow: 0 20px 40px var(--color-black-overlay-heavy);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     position: relative;
     overflow: hidden;
     animation: fadeInUp var(--animation-duration-slow) ease-out;
+    transition: transform var(--transition-slow) var(--transition-easing),
+                box-shadow var(--transition-slow) var(--transition-easing);
+}
+
+.project-showcase:hover {
+    transform: scale(1.02);
 }
 
 /* Prevent border clipping in carousel - allow shadows and borders to show */
@@ -488,13 +505,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
-    gap: 0.5rem;
-}
-
-.location-icon {
-    font-size: 1.8rem;
-    filter: drop-shadow(0 1px 2px var(--color-black-overlay-light));
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-xs);
 }
 
 .location-name {
@@ -518,7 +530,7 @@
     color: var(--color-light-gray);
     font-size: 1.05rem;
     line-height: 1.7;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
     text-align: center;
     max-width: 700px;
     margin-left: auto;
@@ -529,9 +541,9 @@
    Why Choose Section
    ========================================================================== */
 
-.why-choose h2 {
+.section--copper-dark h2 {
     color: var(--color-white);
-    margin-bottom: 4rem;
+    margin-bottom: var(--spacing-4xl);
     text-align: center;
     font-size: 2.5rem;
     font-weight: 700;
@@ -548,7 +560,7 @@
     color: var(--color-white);
     font-size: 1.4rem;
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
     line-height: 1.4;
 }
 
@@ -556,7 +568,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: var(--spacing-xl);
 }
 
 .contact-info {
@@ -591,38 +603,7 @@
    Military & Defense Page Layout
    ========================================================================== */
 
-/* Overview & Benefits Section */
-.overview-benefits-section {
-    padding: var(--spacing-6xl) 0 var(--spacing-4xl) 0;
-    background: var(--color-beach);
-    position: relative;
-}
-
-.overview-benefits-section::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 0;
-    right: 0;
-    height: var(--spacing-5xl);
-    background: linear-gradient(to bottom,
-        var(--color-copper-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-}
-
-.overview-benefits-section::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: var(--spacing-5xl);
-    background: linear-gradient(to top,
-        var(--color-forest-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-}
+/* Overview & Benefits Section - uses .section .section--beach .section--padded-xl */
 
 .overview-content {
     display: grid;
@@ -675,13 +656,13 @@
     border-top: 2px solid var(--color-copper-overlay-medium);
 }
 
-.overview-benefits-section .benefits-section {
+.section--beach .benefits-section {
     margin-top: var(--spacing-4xl);
     padding-top: var(--spacing-3xl);
     border-top: 2px solid var(--color-copper-overlay-medium);
 }
 
-.overview-benefits-section .benefits-section h3 {
+.section--beach .benefits-section h3 {
     font-size: 2.2rem;
     color: var(--color-midnight);
     text-align: center;
@@ -697,43 +678,9 @@
     margin-bottom: var(--spacing-2xl);
 }
 
-/* Trust Section */
-.trust-section {
-    padding: var(--spacing-6xl) 0 var(--spacing-6xl) 0;
-    background: linear-gradient(135deg, var(--color-copper-dark) 0%, var(--color-midnight) 100%);
-    position: relative;
-    overflow: hidden;
-}
+/* Trust Section - uses .section .section--gradient-dark .section--padded-md */
 
-.trust-section::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 0;
-    right: 0;
-    height: var(--spacing-5xl);
-    background: linear-gradient(to bottom,
-        var(--color-forest-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.trust-section::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: var(--spacing-5xl);
-    background: linear-gradient(to top,
-        var(--color-midnight-overlay-light) 0%,
-        transparent 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.trust-section h2 {
+.section--gradient-dark h2 {
     color: var(--color-white);
     margin-bottom: var(--spacing-4xl);
     text-align: center;
@@ -763,28 +710,23 @@
 }
 
 .trust-feature {
+    /* Extends: .card .card--glass */
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-lg);
     padding: var(--card-padding);
-    background: var(--card-bg-glass);
-    border-radius: var(--border-radius-large);
-    border: 1px solid var(--color-white-overlay);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 15px 35px var(--color-black-overlay-medium);
-    transition: transform var(--transition-slow) var(--transition-easing),
-                box-shadow var(--transition-slow) var(--transition-easing);
-}
-
-.trust-feature .icon-lg {
     color: var(--color-white);
 }
 
-.trust-icon {
-    font-size: 2.2rem;
+.trust-feature > .icon-lg {
     flex-shrink: 0;
-    color: var(--color-white);
+    align-self: flex-start;
+}
+
+.trust-feature-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .trust-feature h3 {
@@ -844,8 +786,8 @@
         gap: var(--spacing-md);
     }
 
-    .trust-icon {
-        font-size: 1.8rem;
+    .trust-feature-content {
+        flex-basis: 100%;
     }
 
     .trust-feature h3 {
@@ -853,7 +795,6 @@
     }
 
     .trust-feature p {
-        flex-basis: 100%;
         margin-top: var(--spacing-sm);
     }
 }
@@ -863,9 +804,9 @@
    ========================================================================== */
 
 .footer {
-    background: linear-gradient(135deg, var(--color-midnight) 0%, var(--color-midnight-light) 100%);
+    background: var(--color-forest-dark);
     color: var(--color-light-gray);
-    padding: 3rem 0;
+    padding: var(--spacing-3xl) 0;
     text-align: center;
     border-top: 1px solid var(--color-white-overlay-light);
     position: relative;
@@ -879,13 +820,13 @@
     right: 0;
     height: var(--spacing-5xl);
     background: linear-gradient(to bottom,
-        var(--color-copper-overlay-light) 0%,
+        var(--color-midnight-overlay-light) 0%,
         transparent 100%);
     pointer-events: none;
 }
 
 .footer .container {
-    padding: 0 2rem;
+    padding: 0 var(--spacing-xl);
 }
 
 .footer p {
