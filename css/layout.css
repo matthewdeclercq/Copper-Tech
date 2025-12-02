@@ -321,7 +321,6 @@
 
 /* Section background modifiers */
 .section--beach { background: var(--section-bg-beach); }
-.section--beach-dark { background: var(--section-bg-beach-dark); }
 .section--forest-dark { background: var(--section-bg-forest-dark); }
 .section--copper-dark { background: var(--section-bg-copper-dark); }
 .section--midnight-dark { background: var(--section-bg-midnight-dark); }
@@ -370,19 +369,6 @@
 }
 
 .section--beach::after {
-    background: linear-gradient(to top,
-        var(--color-midnight-overlay-light) 0%,
-        transparent 100%);
-}
-
-/* Beach-dark section - blends from banner (dark) to beach-dark */
-.section--beach-dark::before {
-    background: linear-gradient(to bottom,
-        rgba(0, 0, 0, 0.2) 0%,
-        transparent 100%);
-}
-
-.section--beach-dark::after {
     background: linear-gradient(to top,
         var(--color-midnight-overlay-light) 0%,
         transparent 100%);
