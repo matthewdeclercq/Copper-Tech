@@ -220,7 +220,7 @@
     .project-images,
     .project-highlights,
     .why-choose-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
         gap: var(--spacing-md);
     }
 
@@ -261,7 +261,6 @@
     .project-image,
     .project-image-placeholder {
         width: 100%;
-        height: 140px;
     }
 
     .highlight-item {
@@ -347,18 +346,13 @@
     }
 
     .project-images {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
         gap: var(--spacing-md);
-    }
-    
-    /* Ensure images fill full width on tablet */
-    .project-image,
-    .project-image-placeholder {
-        width: 100%;
     }
 
     .project-highlights {
         grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+        gap: var(--spacing-md);
     }
 
     /* Why Choose */

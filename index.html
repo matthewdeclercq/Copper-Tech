@@ -177,10 +177,27 @@
                 </div>
             </header>
 
-            <!-- Project Cards Container -->
-            <div class="project-cards-container" data-display-mode="grid">
-                <div class="project-cards-list">
-                    <!-- Individual project cards will be loaded here dynamically -->
+            <!-- Project Cards Carousel -->
+            <div class="project-carousel-wrapper">
+                <div class="carousel-container" role="region" aria-label="Featured Projects Carousel">
+                    <div class="carousel-slides">
+                        <div class="project-cards-list">
+                            <!-- Individual project cards will be loaded here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Arrows -->
+                    <button class="carousel-nav carousel-nav--prev" aria-label="Previous project" disabled>
+                        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <button class="carousel-nav carousel-nav--next" aria-label="Next project">
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                
+                <!-- Pagination Dots -->
+                <div class="carousel-pagination" role="tablist" aria-label="Project slides">
+                    <!-- Pagination dots will be generated dynamically -->
                 </div>
             </div>
         </section>

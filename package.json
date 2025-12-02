@@ -1,0 +1,16 @@
+{
+  "name": "copper-tech-website",
+  "version": "1.0.0",
+  "description": "Copper Tech LLC website build scripts",
+  "private": true,
+  "scripts": {
+    "build": "node build/inject-head-common.js && node build/update-sitemap.js",
+    "build:dry-run": "node build/inject-head-common.js --dry-run",
+    "build:inject": "node build/inject-head-common.js",
+    "build:sitemap": "node build/update-sitemap.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+

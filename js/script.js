@@ -200,6 +200,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         initializeMenuOverlay();
         initializeFadeInAnimations();
         initializeImageObserver();
+        
+        // Initialize carousel after components are loaded
+        initializeCarousel();
     } catch (error) {
         console.error('Error during initialization:', error);
         // Ensure body still gets loaded class even if components fail
@@ -579,6 +582,278 @@ function initializeImageObserver() {
         }
     } catch (error) {
         console.error('Error initializing image observer:', error);
+    }
+}
+
+// ============================================================================
+// Project Carousel
+// ============================================================================
+
+/**
+ * Initializes the project cards carousel with navigation and pagination.
+ * Sets up event listeners for navigation arrows and pagination dots.
+ * Manages slide transitions and active states.
+ * @returns {void}
+ */
+function initializeCarousel() {
+    try {
+        const carouselSlides = document.querySelector('.carousel-slides');
+        const projectCardsList = document.querySelector('.project-cards-list');
+        const prevButton = document.querySelector('.carousel-nav--prev');
+        const nextButton = document.querySelector('.carousel-nav--next');
+        const paginationContainer = document.querySelector('.carousel-pagination');
+
+        // Check if all required elements exist
+        if (!carouselSlides || !projectCardsList || !prevButton || !nextButton || !paginationContainer) {
+            console.warn('Carousel elements not found, skipping carousel initialization');
+            return;
+        }
+
+        // Get all project cards
+        const slides = projectCardsList.querySelectorAll('.project-showcase');
+        
+        if (slides.length === 0) {
+            console.warn('No project cards found for carousel');
+            return;
+        }
+
+        // Initialize carousel state
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        /**
+         * Updates the carousel display to show the specified slide.
+         * Calculates the transform to center the active card on the page.
+         * @param {number} index - The index of the slide to display (0-based).
+         * @returns {void}
+         */
+        function goToSlide(index) {
+            try {
+                // Ensure index is within bounds
+                if (index < 0 || index >= totalSlides) {
+                    return;
+                }
+
+                currentSlide = index;
+
+                // Calculate transform to center the current slide
+                // With padding: 0 50vw, first card is already centered at index 0
+                // Each subsequent card needs to move by (cardWidth + gap)
+                const slide = slides[0];
+                if (slide) {
+                    const slideWidth = slide.offsetWidth;
+                    const gap = parseInt(getComputedStyle(projectCardsList).gap) || 0;
+                    const moveDistance = slideWidth + gap;
+                    
+                    // Calculate the offset to center the current slide
+                    // Negative value moves left, positive moves right
+                    const translateX = -currentSlide * moveDistance;
+                    projectCardsList.style.transform = `translateX(${translateX}px)`;
+                }
+
+                // Update active slide styling
+                slides.forEach((slide, i) => {
+                    if (i === currentSlide) {
+                        slide.classList.add('active-slide');
+                    } else {
+                        slide.classList.remove('active-slide');
+                    }
+                });
+
+                // Update navigation buttons state
+                prevButton.disabled = currentSlide === 0;
+                nextButton.disabled = currentSlide === totalSlides - 1;
+
+                // Update pagination dots
+                updatePaginationDots();
+
+                // Announce slide change to screen readers
+                announceToScreenReader(`Project ${currentSlide + 1} of ${totalSlides}`);
+            } catch (error) {
+                console.error('Error navigating to slide:', error);
+            }
+        }
+
+        /**
+         * Navigates to the next slide in the carousel.
+         * @returns {void}
+         */
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        /**
+         * Navigates to the previous slide in the carousel.
+         * @returns {void}
+         */
+        function prevSlide() {
+            if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        /**
+         * Updates the active state of pagination dots.
+         * @returns {void}
+         */
+        function updatePaginationDots() {
+            const dots = paginationContainer.querySelectorAll('.carousel-pagination-dot');
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                    dot.setAttribute('aria-selected', 'true');
+                } else {
+                    dot.classList.remove('active');
+                    dot.setAttribute('aria-selected', 'false');
+                }
+            });
+        }
+
+        /**
+         * Creates pagination dots for each slide.
+         * @returns {void}
+         */
+        function createPaginationDots() {
+            // Clear existing dots
+            paginationContainer.innerHTML = '';
+
+            // Create a dot for each slide
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.classList.add('carousel-pagination-dot');
+                dot.setAttribute('role', 'tab');
+                dot.setAttribute('aria-label', `Go to project ${i + 1}`);
+                dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                
+                // Add click event listener
+                dot.addEventListener('click', () => goToSlide(i));
+                
+                paginationContainer.appendChild(dot);
+            }
+
+            // Set first dot as active
+            updatePaginationDots();
+        }
+
+        // Set up navigation button event listeners (arrows are hidden but functionality kept)
+        prevButton.addEventListener('click', prevSlide);
+        nextButton.addEventListener('click', nextSlide);
+
+        // Add click handlers to each card to navigate to it
+        slides.forEach((slide, index) => {
+            slide.addEventListener('click', function(e) {
+                // Only navigate if it's a click, not the end of a swipe
+                if (!isSwiping && index !== currentSlide) {
+                    goToSlide(index);
+                }
+            });
+        });
+
+        // Touch/Swipe functionality for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+        let isSwiping = false;
+        const swipeThreshold = 50; // Minimum distance for a swipe
+
+        /**
+         * Handles the start of a touch event.
+         * @param {TouchEvent} e - The touch event.
+         * @returns {void}
+         */
+        function handleTouchStart(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            isSwiping = false;
+        }
+
+        /**
+         * Handles touch movement to detect swiping.
+         * @param {TouchEvent} e - The touch event.
+         * @returns {void}
+         */
+        function handleTouchMove(e) {
+            const currentX = e.changedTouches[0].screenX;
+            const currentY = e.changedTouches[0].screenY;
+            const diffX = Math.abs(currentX - touchStartX);
+            const diffY = Math.abs(currentY - touchStartY);
+            
+            // If horizontal movement is greater than vertical, it's a swipe
+            if (diffX > diffY && diffX > 10) {
+                isSwiping = true;
+            }
+        }
+
+        /**
+         * Handles the end of a touch event and executes swipe navigation.
+         * @param {TouchEvent} e - The touch event.
+         * @returns {void}
+         */
+        function handleTouchEnd(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }
+
+        /**
+         * Determines swipe direction and navigates accordingly.
+         * @returns {void}
+         */
+        function handleSwipe() {
+            const diffX = touchStartX - touchEndX;
+            const diffY = Math.abs(touchStartY - touchEndY);
+            
+            // Only register as swipe if horizontal movement is greater than vertical
+            if (Math.abs(diffX) > diffY && Math.abs(diffX) > swipeThreshold) {
+                if (diffX > 0) {
+                    // Swiped left - go to next slide
+                    nextSlide();
+                } else {
+                    // Swiped right - go to previous slide
+                    prevSlide();
+                }
+            }
+            
+            // Reset swipe flag after a short delay
+            setTimeout(() => {
+                isSwiping = false;
+            }, 50);
+        }
+
+        // Add touch event listeners to carousel
+        carouselSlides.addEventListener('touchstart', handleTouchStart, { passive: true });
+        carouselSlides.addEventListener('touchmove', handleTouchMove, { passive: true });
+        carouselSlides.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        // Create pagination dots
+        createPaginationDots();
+
+        // Initialize to first slide
+        goToSlide(0);
+
+        // Handle window resize to recalculate slide positions
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                goToSlide(currentSlide);
+            }, 150);
+        }, { passive: true });
+
+        // Optional: Add keyboard navigation
+        carouselSlides.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+
+    } catch (error) {
+        console.error('Error initializing carousel:', error);
     }
 }
 

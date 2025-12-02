@@ -524,6 +524,160 @@
 }
 
 /* ==========================================================================
+   Project Carousel
+   ========================================================================== */
+
+.project-carousel-wrapper {
+    padding: 0 0 var(--spacing-6xl) 0;
+    position: relative;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.carousel-slides {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+    padding: var(--spacing-2xl) 0;
+    touch-action: pan-y pinch-zoom;
+    -webkit-user-select: none;
+    user-select: none;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.carousel-slides .project-cards-list {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-5xl);
+    max-width: none;
+    margin: 0;
+    padding-left: calc(50vw - 40vw);
+    padding-right: calc(50vw - 40vw);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.carousel-slides .project-showcase {
+    min-width: 80vw;
+    max-width: 1200px;
+    width: 80vw;
+    margin-bottom: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform var(--transition-slow) var(--transition-easing),
+                box-shadow var(--transition-slow) var(--transition-easing),
+                opacity 0.3s ease;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.carousel-slides .project-showcase:not(.active-slide) {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.carousel-slides .project-showcase:not(.active-slide):hover {
+    opacity: 0.75;
+    transform: scale(0.97);
+}
+
+.carousel-slides .project-showcase.active-slide {
+    opacity: 1;
+    z-index: 10;
+}
+
+/* Carousel Navigation Arrows - Hidden */
+.carousel-nav {
+    display: none;
+}
+
+/* Carousel Pagination Dots */
+.carousel-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-3xl);
+}
+
+.carousel-pagination-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-white-overlay);
+    border: 2px solid var(--color-white-overlay);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.carousel-pagination-dot:hover {
+    background: var(--color-copper-light);
+    border-color: var(--color-copper-light);
+    transform: scale(1.2);
+}
+
+.carousel-pagination-dot.active {
+    background: var(--color-copper);
+    border-color: var(--color-copper);
+    width: 32px;
+    border-radius: 6px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .carousel-slides .project-cards-list {
+        padding-left: calc(50vw - 42.5vw);
+        padding-right: calc(50vw - 42.5vw);
+    }
+    
+    .carousel-slides .project-showcase {
+        min-width: 85vw;
+        width: 85vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-slides {
+        padding: var(--spacing-lg) 0;
+    }
+    
+    .carousel-slides .project-cards-list {
+        gap: var(--spacing-3xl);
+        padding-left: calc(50vw - 45vw);
+        padding-right: calc(50vw - 45vw);
+    }
+    
+    .carousel-slides .project-showcase {
+        min-width: 90vw;
+        width: 90vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-slides {
+        padding: var(--spacing-md) 0;
+    }
+    
+    .carousel-slides .project-cards-list {
+        gap: var(--spacing-xl);
+        padding-left: calc(50vw - 46vw);
+        padding-right: calc(50vw - 46vw);
+    }
+    
+    .carousel-slides .project-showcase {
+        min-width: 92vw;
+        width: 92vw;
+    }
+}
+
+/* ==========================================================================
    Why Choose Section
    ========================================================================== */
 
