@@ -28,13 +28,14 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 - `CNAME` - GitHub Pages custom domain configuration (coppertech.co)
 - `build/` - Build utilities
   - `update-sitemap.js` - Utility script for updating sitemap lastmod dates
+  - `inject-head-common.js` - Build script that injects common head content into HTML files
 - `components/` - Reusable HTML components
   - `nav.html` - Navigation component
   - `footer.html` - Footer component
   - `cta.html` - Call-to-action component
   - `project-navy-pacific.html` - US Navy Pacific Missile Range Facility project card
   - `project-camper-van.html` - Off-Grid No-Compromise Camper Van project card
-  - `head-common.html` - Reference for common head elements
+  - `head-common.html` - Common head elements (injected into HTML files during build)
 - `assets/` - Images, favicons, and media files
 
 ## SEO Features
@@ -82,16 +83,29 @@ The `js/config.js` file centralizes all component paths and configuration:
 
 Modify this file to add/remove components or update paths without touching the main script.
 
-### Updating Sitemap
+### Build Process
+
+Before deployment, you need to run the build scripts to prepare the site:
+
+#### Injecting Common Head Content
+
+The common head content (meta tags, stylesheets, scripts) is maintained in `components/head-common.html` and automatically injected into all HTML files. This ensures consistency and reduces duplication.
+
+```bash
+# Inject common head content into HTML files
+node build/inject-head-common.js
+```
+
+#### Updating Sitemap
 
 The sitemap includes both pages with proper priority and change frequency. To update the last modified dates:
 
 ```bash
-# Run the update script from the build directory
+# Update sitemap lastmod dates
 node build/update-sitemap.js
 ```
 
-The script automatically updates all `lastmod` dates to today's date and is designed to be run before deployment.
+Both scripts are designed to be run before deployment to ensure the site is properly built.
 
 ## Deployment
 
@@ -99,9 +113,15 @@ This site is configured for GitHub Pages deployment with the custom domain `copp
 
 ### Deployment Process
 1. Make your changes
-2. Update the sitemap: `node build/update-sitemap.js`
+2. Run the build scripts:
+   ```bash
+   node build/inject-head-common.js
+   node build/update-sitemap.js
+   ```
 3. Commit and push changes to the `main` branch
 4. GitHub Pages will automatically deploy the updated site
+
+**Note:** If you modify `components/head-common.html`, you must run `inject-head-common.js` to update all HTML files before committing.
 
 ## Technologies Used
 
