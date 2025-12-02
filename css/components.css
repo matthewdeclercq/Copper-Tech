@@ -233,7 +233,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--spacing-lg);
-    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
 }
 
 .highlight-item {

@@ -599,12 +599,10 @@ function initializeCarousel() {
     try {
         const carouselSlides = document.querySelector('.carousel-slides');
         const projectCardsList = document.querySelector('.project-cards-list');
-        const prevButton = document.querySelector('.carousel-nav--prev');
-        const nextButton = document.querySelector('.carousel-nav--next');
         const paginationContainer = document.querySelector('.carousel-pagination');
 
         // Check if all required elements exist
-        if (!carouselSlides || !projectCardsList || !prevButton || !nextButton || !paginationContainer) {
+        if (!carouselSlides || !projectCardsList || !paginationContainer) {
             console.warn('Carousel elements not found, skipping carousel initialization');
             return;
         }
@@ -659,10 +657,6 @@ function initializeCarousel() {
                         slide.classList.remove('active-slide');
                     }
                 });
-
-                // Update navigation buttons state
-                prevButton.disabled = currentSlide === 0;
-                nextButton.disabled = currentSlide === totalSlides - 1;
 
                 // Update pagination dots
                 updatePaginationDots();
@@ -736,10 +730,6 @@ function initializeCarousel() {
             // Set first dot as active
             updatePaginationDots();
         }
-
-        // Set up navigation button event listeners (arrows are hidden but functionality kept)
-        prevButton.addEventListener('click', prevSlide);
-        nextButton.addEventListener('click', nextSlide);
 
         // Add click handlers to each card to navigate to it
         slides.forEach((slide, index) => {

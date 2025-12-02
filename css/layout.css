@@ -491,7 +491,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
     gap: var(--spacing-xs);
 }
 
@@ -505,7 +505,7 @@
 
 .project-showcase h3 {
     color: var(--color-white);
-    margin-bottom: 1.2rem;
+    margin-bottom: var(--spacing-xl);
     font-size: 1.8rem;
     font-weight: 700;
     text-align: center;
@@ -554,7 +554,7 @@
 .carousel-slides .project-cards-list {
     display: flex;
     flex-direction: row;
-    gap: var(--spacing-5xl);
+    gap: var(--spacing-3xl);
     max-width: none;
     margin: 0;
     padding-left: calc(50vw - 40vw);
