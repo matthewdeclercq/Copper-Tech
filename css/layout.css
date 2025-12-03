@@ -27,12 +27,15 @@
     transition: background var(--transition-base) ease,
                 box-shadow var(--transition-base) ease,
                 border-color var(--transition-base) ease;
+    overflow: hidden;
 }
 
 .nav-actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .nav-container.scrolled {

@@ -9,16 +9,10 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "assets/favicon.png",
-      "sizes": "192x192",
+      "src": "assets/CT_LOGO.png",
+      "sizes": "any",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/favicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "categories": ["business", "technology"],

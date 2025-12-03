@@ -318,6 +318,55 @@
     }
 }
 
+/* Very Small Devices (phones in portrait, < 480px) */
+@media (max-width: 480px) {
+    /* Navigation - prevent button overflow */
+    .nav-container {
+        padding: var(--spacing-sm) var(--spacing-xs);
+        width: 100%;
+        margin-top: var(--spacing-xs);
+    }
+
+    .nav-logo-img {
+        height: 32px;
+    }
+
+    .nav-actions {
+        gap: var(--spacing-xs);
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    .cta-button {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.65rem;
+        letter-spacing: 0.2px;
+    }
+
+    /* Service cards - ensure single column and centered */
+    .grid-auto-fit {
+        grid-template-columns: 1fr !important;
+        justify-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .feature-item {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    /* Container padding for very small devices */
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    /* Card padding adjustments */
+    .card--padded-lg {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+}
+
 /* Tablet Responsive */
 @media (max-width: 1024px) {
     /* Using --breakpoint-md from base.css */
