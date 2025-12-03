@@ -5,7 +5,7 @@
 /* Skip link for accessibility */
 .skip-link {
     position: absolute;
-    top: -40px;
+    top: -50px;
     left: 6px;
     background: var(--color-midnight);
     color: var(--color-white);
@@ -20,7 +20,7 @@
 
 .skip-link:focus,
 .skip-link:focus-visible {
-    top: 6px;
+    top: 0px;
     outline: 3px solid var(--color-electric);
     outline-offset: 3px;
     box-shadow: 0 0 0 1px var(--color-midnight), 0 0 0 4px var(--color-electric-overlay);

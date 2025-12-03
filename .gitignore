@@ -22,7 +22,7 @@ yarn-error.log*
 
 # Build and distribution
 dist/
-build/
+
 
 # Environment variables
 .env
