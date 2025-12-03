@@ -78,6 +78,7 @@
 .nav-logo-img {
     height: 50px;
     width: auto;
+    vertical-align: middle;
     transition: transform var(--transition-base) ease,
                 filter var(--transition-base) ease;
     filter: drop-shadow(0 2px 4px var(--color-black-overlay-medium));
@@ -354,6 +355,38 @@
     background-image: image-set(
         url('../assets/off-grid-home-2.webp') type('image/webp'),
         url('../assets/off-grid-home-2.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+    min-height: 300px;
+}
+
+/* Emergency Response page banner */
+.banner-emergency-response {
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/emergency-response.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/emergency-response.webp') type('image/webp'),
+        url('../assets/emergency-response.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+    min-height: 300px;
+}
+
+/* Job Sites page banner */
+.banner-job-sites {
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/mobile-power.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/mobile-power.webp') type('image/webp'),
+        url('../assets/mobile-power.jpg') type('image/jpeg')
     );
     background-position: center;
     background-size: cover;

@@ -191,7 +191,7 @@
     }
 
     /* Banner */
-    .banner:not(.banner-military):not(.banner-remote-businesses):not(.banner-homes) {
+    .banner:not(.banner-military):not(.banner-remote-businesses):not(.banner-homes):not(.banner-emergency-response):not(.banner-job-sites) {
         height: 85vh;
         /* Fallback for older browsers that don't support image-set */
         background-image: url('../assets/bg_mobile.jpg');
