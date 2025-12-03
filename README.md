@@ -15,6 +15,8 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 
 - `index.html` - Main homepage showcasing services and company information
 - `military-defense.html` - Dedicated page for military and defense services
+- `homes.html` - Residential solar solutions page (off-grid and grid-tied systems)
+- `remote-businesses.html` - Remote business energy solutions page (farms, logging, mining, heavy industry)
 - `css/` - Modular CSS architecture
   - `styles.css` - Main stylesheet (imports other modules)
   - `base.css` - Base styles and resets
@@ -29,6 +31,7 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 - `build/` - Build utilities
   - `update-sitemap.js` - Utility script for updating sitemap lastmod dates
   - `inject-head-common.js` - Build script that injects common head content into HTML files
+  - `optimize-images.js` - Image optimization script that generates WebP versions and compresses images
 - `components/` - Reusable HTML components
   - `nav.html` - Navigation component
   - `footer.html` - Footer component
@@ -50,7 +53,7 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 ## Local Development
 
 ### Prerequisites
-- Node.js (for running the sitemap update script)
+- Node.js (for running build scripts: sitemap updates, head injection, and image optimization)
 
 ### Getting Started
 1. Clone the repository
@@ -91,21 +94,88 @@ Before deployment, you need to run the build scripts to prepare the site:
 
 The common head content (meta tags, stylesheets, scripts) is maintained in `components/head-common.html` and automatically injected into all HTML files. This ensures consistency and reduces duplication.
 
+**Processed files:**
+- `index.html`
+- `military-defense.html`
+- `remote-businesses.html`
+- `homes.html`
+
 ```bash
 # Inject common head content into HTML files
 node build/inject-head-common.js
+
+# Preview changes without modifying files
+node build/inject-head-common.js --dry-run
 ```
 
 #### Updating Sitemap
 
-The sitemap includes both pages with proper priority and change frequency. To update the last modified dates:
+The sitemap includes all pages with proper priority and change frequency. The script automatically updates all `<lastmod>` dates to today's date.
+
+**Pages in sitemap:**
+- `index.html` (priority: 1.0)
+- `military-defense.html` (priority: 0.8)
+- `remote-businesses.html` (priority: 0.8)
+- `homes.html` (priority: 0.8)
 
 ```bash
 # Update sitemap lastmod dates
 node build/update-sitemap.js
 ```
 
-Both scripts are designed to be run before deployment to ensure the site is properly built.
+#### Optimizing Images
+
+The image optimization script generates WebP versions of images and compresses them for better performance. It processes all JPG/PNG files in the `assets/` directory (excluding favicons).
+
+**Features:**
+- Compresses JPG images (quality: 85, progressive encoding)
+- Compresses PNG images (quality: 90, compression level: 9)
+- Generates WebP versions (quality: 85) for modern browsers
+- Resizes images larger than 1920px width
+- Preserves original images as fallbacks
+
+```bash
+# Optimize images (generates WebP and compresses)
+node build/optimize-images.js
+
+# Dry run to see what would be optimized
+node build/optimize-images.js --dry-run
+
+# Only generate WebP versions
+node build/optimize-images.js --webp-only
+
+# Only compress existing images
+node build/optimize-images.js --compress-only
+```
+
+All build scripts are designed to be run before deployment to ensure the site is properly built.
+
+**Build Script Execution Order:**
+The scripts can be run in any order, but the recommended workflow is:
+1. `inject-head-common.js` - Update HTML files with common head content
+2. `update-sitemap.js` - Update sitemap dates
+3. `optimize-images.js` - Optimize images (can be run independently)
+
+Or simply run `npm run build` to execute all scripts in the correct order.
+
+### Banner Images
+
+The site uses different banner images for each page, defined in `css/layout.css`:
+
+- **Homepage** (`.banner`): 
+  - Desktop: `assets/bg.jpg`
+  - Mobile: `assets/bg_mobile.jpg` (via responsive CSS)
+
+- **Military & Defense** (`.banner-military`): 
+  - `assets/military+defense.jpg`
+
+- **Remote Businesses** (`.banner-remote-businesses`): 
+  - `assets/logging-office.jpg`
+
+- **Residential Homes** (`.banner-homes`): 
+  - `assets/off-grid-home-2.jpg`
+
+**Note:** When adding new pages, ensure corresponding banner images are added to the assets directory and referenced in the CSS with a `.banner-[page-name]` class.
 
 ## Deployment
 
@@ -115,13 +185,18 @@ This site is configured for GitHub Pages deployment with the custom domain `copp
 1. Make your changes
 2. Run the build scripts:
    ```bash
+   # Run all build scripts (recommended)
+   npm run build
+   
+   # Or run individually:
    node build/inject-head-common.js
    node build/update-sitemap.js
+   node build/optimize-images.js
    ```
 3. Commit and push changes to the `main` branch
 4. GitHub Pages will automatically deploy the updated site
 
-**Note:** If you modify `components/head-common.html`, you must run `inject-head-common.js` to update all HTML files before committing.
+**Note:** If you modify `components/head-common.html`, you must run `inject-head-common.js` to update all HTML files before committing. If you add or modify images, run `optimize-images.js` to generate WebP versions and compress them.
 
 ## Technologies Used
 

@@ -8,7 +8,13 @@
     <title>Copper Tech LLC - Off-Grid Energy & Technology Consulting</title>
     <meta name="description" content="Technology and business consulting rooted in the Keweenaw Peninsula. Specializing in off-grid energy solutions, network infrastructure, and custom software systems.">
     <link rel="canonical" href="https://coppertech.co/">
+    <link rel="preload" href="assets/bg.webp" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="assets/bg.jpg" as="image" type="image/jpeg" fetchpriority="high">
+    <link rel="preload" href="assets/bg_mobile.webp" as="image" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" href="assets/bg_mobile.jpg" as="image" type="image/jpeg" media="(max-width: 768px)" fetchpriority="high">
     <link rel="prefetch" href="military-defense.html">
+    <link rel="prefetch" href="remote-businesses.html">
+    <link rel="prefetch" href="homes.html">
 
     <!-- Common head content injected by build script -->
 
@@ -20,14 +26,21 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; frame-src https://calendar.app.google;">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#B87333">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Copper Tech">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preload" href="assets/CT_LOGO.png" as="image">
+    <link rel="preload" href="assets/CT_LOGO.png" as="image" fetchpriority="high">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     <script src="js/config.js"></script>
     <script src="js/script.js" defer></script>
 
@@ -36,7 +49,7 @@
     <meta property="og:url" content="https://coppertech.co/">
     <meta property="og:title" content="Copper Tech LLC - Off-Grid Energy & Technology Consulting">
     <meta property="og:description" content="Specializing in off-grid energy solutions, network infrastructure, and custom software systems. Serving clients nationwide from the Keweenaw Peninsula.">
-    <meta property="og:image" content="assets/CT_LOGO.png">
+    <meta property="og:image" content="https://coppertech.co/assets/CT_LOGO.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="Copper Tech LLC">
@@ -46,38 +59,54 @@
     <meta property="twitter:url" content="https://coppertech.co/">
     <meta property="twitter:title" content="Copper Tech LLC - Off-Grid Energy & Technology Consulting">
     <meta property="twitter:description" content="Specializing in off-grid energy solutions, network infrastructure, and custom software systems. Serving clients nationwide from the Keweenaw Peninsula.">
-    <meta property="twitter:image" content="assets/CT_LOGO.png">
+    <meta property="twitter:image" content="https://coppertech.co/assets/CT_LOGO.png">
 
     <!-- Page-Specific Structured Data -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Copper Tech LLC",
-        "url": "https://coppertech.co/",
-        "logo": "https://coppertech.co/assets/CT_LOGO.png",
-        "description": "Technology and business consulting rooted in the Keweenaw Peninsula. Specializing in off-grid energy solutions, network infrastructure, and custom software systems.",
-        "address": {
-            "@type": "PostalAddress",
-            "addressRegion": "MI",
-            "addressCountry": "US"
+    [
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Copper Tech LLC",
+            "url": "https://coppertech.co/",
+            "logo": "https://coppertech.co/assets/CT_LOGO.png",
+            "description": "Technology and business consulting rooted in the Keweenaw Peninsula. Specializing in off-grid energy solutions, network infrastructure, and custom software systems.",
+            "address": {
+                "@type": "PostalAddress",
+                "addressRegion": "MI",
+                "addressCountry": "US"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "info@coppertech.co",
+                "contactType": "customer service"
+            },
+            "serviceType": [
+                "Off-Grid Energy Solutions",
+                "Solar Power Systems",
+                "Battery Storage",
+                "Network Infrastructure",
+                "Security Systems",
+                "Technology Consulting"
+            ],
+            "areaServed": "US",
+            "foundingDate": "2025"
         },
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "email": "info@coppertech.co",
-            "contactType": "customer service"
-        },
-        "serviceType": [
-            "Off-Grid Energy Solutions",
-            "Solar Power Systems",
-            "Battery Storage",
-            "Network Infrastructure",
-            "Security Systems",
-            "Technology Consulting"
-        ],
-        "areaServed": "US",
-        "foundingDate": "2025"
-    }
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Copper Tech LLC",
+            "url": "https://coppertech.co/",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://coppertech.co/?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        }
+    ]
     </script>
 </head>
 <body>

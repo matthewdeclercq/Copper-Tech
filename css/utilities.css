@@ -191,9 +191,18 @@
     }
 
     /* Banner */
-    .banner:not(.banner-military) {
+    .banner:not(.banner-military):not(.banner-remote-businesses):not(.banner-homes) {
         height: 85vh;
-        background: url('../assets/bg_mobile.jpg') center/cover no-repeat;
+        /* Fallback for older browsers that don't support image-set */
+        background-image: url('../assets/bg_mobile.jpg');
+        /* WebP with fallback for modern browsers */
+        background-image: image-set(
+            url('../assets/bg_mobile.webp') type('image/webp'),
+            url('../assets/bg_mobile.jpg') type('image/jpeg')
+        );
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 
     .banner-text h1 {

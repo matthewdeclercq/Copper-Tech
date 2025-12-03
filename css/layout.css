@@ -213,7 +213,16 @@
 .banner {
     height: 70vh;
     min-height: 600px;
-    background: url('../assets/bg.jpg') center/cover no-repeat;
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/bg.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/bg.webp') type('image/webp'),
+        url('../assets/bg.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     position: relative;
     display: flex;
     align-items: center;
@@ -304,7 +313,48 @@
 
 /* Military & Defense page banner */
 .banner-military {
-    background: url('../assets/military+defense.jpg') center/cover no-repeat;
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/military+defense.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/military+defense.webp') type('image/webp'),
+        url('../assets/military+defense.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+    min-height: 300px;
+}
+
+/* Remote Businesses page banner */
+.banner-remote-businesses {
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/logging-office.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/logging-office.webp') type('image/webp'),
+        url('../assets/logging-office.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+    min-height: 300px;
+}
+
+/* Residential Homes page banner */
+.banner-homes {
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/off-grid-home-2.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/off-grid-home-2.webp') type('image/webp'),
+        url('../assets/off-grid-home-2.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 50vh;
     min-height: 300px;
 }
@@ -816,6 +866,19 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: var(--grid-gap-md);
     margin-bottom: var(--spacing-2xl);
+}
+
+/* Consistent spacing for elements within benefits cards */
+.benefits-grid .icon-md {
+    margin-bottom: var(--spacing-sm);
+}
+
+.benefits-grid h4 {
+    margin-bottom: var(--spacing-md);
+}
+
+.benefits-grid p {
+    margin-bottom: 0;
 }
 
 /* Trust Section - uses .section .section--gradient-dark .section--padded-md */

@@ -4,13 +4,20 @@
   "description": "Copper Tech LLC website build scripts",
   "private": true,
   "scripts": {
-    "build": "node build/inject-head-common.js && node build/update-sitemap.js",
+    "build": "node build/inject-head-common.js && node build/update-sitemap.js && node build/optimize-images.js",
     "build:dry-run": "node build/inject-head-common.js --dry-run",
     "build:inject": "node build/inject-head-common.js",
-    "build:sitemap": "node build/update-sitemap.js"
+    "build:sitemap": "node build/update-sitemap.js",
+    "optimize-images": "node build/optimize-images.js",
+    "optimize-images:dry-run": "node build/optimize-images.js --dry-run",
+    "optimize-images:webp-only": "node build/optimize-images.js --webp-only",
+    "optimize-images:compress-only": "node build/optimize-images.js --compress-only"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0"
   }
 }
 
