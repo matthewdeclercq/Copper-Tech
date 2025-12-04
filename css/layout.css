@@ -395,6 +395,22 @@
     min-height: 300px;
 }
 
+/* Commercial Buildings page banner */
+.banner-commercial-buildings {
+    /* Fallback for older browsers that don't support image-set */
+    background-image: url('../assets/library-solar.jpg');
+    /* WebP with fallback for modern browsers */
+    background-image: image-set(
+        url('../assets/library-solar.webp') type('image/webp'),
+        url('../assets/library-solar.jpg') type('image/jpeg')
+    );
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+    min-height: 300px;
+}
+
 /* ==========================================================================
    Section System - Unified base styles for all sections
    ========================================================================== */
