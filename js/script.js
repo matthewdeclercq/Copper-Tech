@@ -31,8 +31,8 @@ const Constants = {
     MENU_OVERLAY_ID: 'menu-overlay',
     /** ID for ARIA live region */
     ARIA_LIVE_REGION_ID: 'aria-live-region',
-    /** CSS selector for elements to animate (sections and articles) */
-    ANIMATION_ELEMENTS_SELECTOR: 'section, article',
+    /** CSS selector for elements to animate (all content elements within sections, but not sections themselves) */
+    ANIMATION_ELEMENTS_SELECTOR: 'section h1, section h2, section h3, section h4, section h5, section h6, section p, section ul, section ol, section li, section div, section article, section header, section footer, section aside',
     /** CSS selector for all images */
     IMAGES_SELECTOR: 'img',
     /** CSS class name for screen reader only content */
@@ -200,6 +200,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         initializeMenuOverlay();
         initializeFadeInAnimations();
         initializeImageObserver();
+        initializeRotatingIndustry();
+        
+        // Initialize banner h1 click handlers for industry pages
+        initializeBannerH1Click();
         
         // Initialize carousel after components are loaded
         initializeCarousel();
@@ -500,8 +504,9 @@ function announceToScreenReader(message) {
 // ============================================================================
 
 /**
- * Initializes fade-in animations for sections and articles using Intersection Observer.
+ * Initializes fade-in animations for articles and items within sections using Intersection Observer.
  * Elements fade in when they enter the viewport. Falls back to immediate fade-in for browsers without IntersectionObserver support.
+ * Note: Sections themselves are not animated, only their child elements.
  * @returns {void}
  */
 function initializeFadeInAnimations() {
@@ -510,8 +515,11 @@ function initializeFadeInAnimations() {
         if (typeof IntersectionObserver === 'undefined') {
             // Fallback: add fade-in class immediately for browsers without support
             const elementsToAnimate = document.querySelectorAll(Constants.ANIMATION_ELEMENTS_SELECTOR);
-            elementsToAnimate.forEach(element => {
-                element.classList.add(Constants.FADE_IN_CLASS);
+            // Use requestAnimationFrame to ensure DOM is ready
+            requestAnimationFrame(() => {
+                elementsToAnimate.forEach(element => {
+                    element.classList.add(Constants.FADE_IN_CLASS);
+                });
             });
             return;
         }
@@ -530,11 +538,25 @@ function initializeFadeInAnimations() {
             });
         }, observerOptions);
 
-        // Observe all sections and articles for animations
+        // Observe all articles and headings within sections for animations
         const elementsToAnimate = document.querySelectorAll(Constants.ANIMATION_ELEMENTS_SELECTOR);
+        
         if (elementsToAnimate.length > 0) {
-            elementsToAnimate.forEach(element => {
-                observer.observe(element);
+            // Use requestAnimationFrame to ensure DOM is fully rendered before checking viewport
+            requestAnimationFrame(() => {
+                elementsToAnimate.forEach(element => {
+                    // Check if element is already in viewport - if so, animate immediately
+                    const rect = element.getBoundingClientRect();
+                    const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+                    
+                    if (isInViewport) {
+                        // Element is already visible, add fade-in class immediately
+                        element.classList.add(Constants.FADE_IN_CLASS);
+                    } else {
+                        // Element is not yet visible, observe it
+                        observer.observe(element);
+                    }
+                });
             });
         }
     } catch (error) {
@@ -844,6 +866,239 @@ function initializeCarousel() {
 
     } catch (error) {
         console.error('Error initializing carousel:', error);
+    }
+}
+
+// ============================================================================
+// Rotating Industry Heading
+// ============================================================================
+
+/**
+ * Initializes the rotating industry heading with hand-drawn underline.
+ * Rotates through industry names and opens menu overlay on click.
+ * @returns {void}
+ */
+function initializeRotatingIndustry() {
+    try {
+        const rotatingText = document.getElementById('rotating-industry-text');
+        if (!rotatingText) {
+            console.warn('Rotating industry text element not found');
+            return;
+        }
+        
+        const rotatingWord = rotatingText.querySelector('.rotating-industry-word-text');
+        const rotatingWordContainer = rotatingText.querySelector('.rotating-industry-word');
+        if (!rotatingWord || !rotatingWordContainer) {
+            console.warn('Rotating industry word element not found');
+            return;
+        }
+
+        // Ensure config exists, fallback to defaults if not
+        if (!AppConfig || !AppConfig.rotatingIndustry) {
+            console.error('AppConfig.rotatingIndustry not found. Using defaults.');
+        }
+        const config = AppConfig?.rotatingIndustry || {
+            industries: ['Military & Defense', 'Remote Businesses', 'Residential Homes', 'Commercial Buildings', 'Emergency Response', 'Job Sites'],
+            rotationInterval: 3500,
+            initialDelay: 2000,
+            fadeDuration: 300,
+            underlineDuration: 600,
+            resumeDelay: 2000
+        };
+        const { industries, rotationInterval, initialDelay, fadeDuration, underlineDuration, resumeDelay } = config;
+
+        // Validate config values
+        if (!industries || industries.length === 0) {
+            console.error('No industries configured for rotation');
+            return;
+        }
+        if (!rotationInterval || !initialDelay || !fadeDuration) {
+            console.error('Invalid rotation timing configuration');
+            return;
+        }
+
+        let currentIndex = 0;
+        let rotationTimer = null;
+        let isPaused = false;
+
+        /**
+         * Restarts the underline animation by forcing a reflow.
+         * @param {HTMLElement} underline - The underline SVG element
+         * @returns {void}
+         */
+        function restartUnderlineAnimation(underline) {
+            underline.style.animation = 'none';
+            void underline.offsetWidth; // Trigger reflow
+            underline.style.animation = `underlineDraw ${underlineDuration}ms ease-out`;
+        }
+
+        /**
+         * Updates the rotating text with fade animation.
+         * @returns {void}
+         */
+        function updateRotatingText() {
+            if (isPaused) return;
+
+            rotatingWord.classList.add('fade-out');
+            
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % industries.length;
+                rotatingWord.textContent = industries[currentIndex];
+                
+                const underline = rotatingWordContainer.querySelector('.hand-drawn-underline');
+                if (underline) {
+                    restartUnderlineAnimation(underline);
+                }
+                
+                rotatingWord.classList.remove('fade-out');
+                rotatingWord.classList.add('fade-in');
+                
+                setTimeout(() => {
+                    rotatingWord.classList.remove('fade-in');
+                }, fadeDuration);
+            }, fadeDuration);
+        }
+
+        /**
+         * Opens the menu overlay by triggering the menu button click.
+         * @returns {void}
+         */
+        function openMenu() {
+            const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
+            if (menuBtn) {
+                menuBtn.click();
+                announceToScreenReader('Navigation menu opened');
+            }
+        }
+
+        /**
+         * Handles menu interaction: pauses rotation, opens menu, resumes after delay.
+         * @returns {void}
+         */
+        function handleMenuInteraction() {
+            pauseRotation();
+            openMenu();
+            setTimeout(resumeRotation, resumeDelay);
+        }
+
+        /**
+         * Starts the rotation timer.
+         * @param {number|null} delay - Delay before first rotation (null uses initialDelay)
+         * @returns {void}
+         */
+        function startRotation(delay = null) {
+            // Clear any existing timer
+            if (rotationTimer) {
+                clearInterval(rotationTimer);
+                rotationTimer = null;
+            }
+            
+            // Only start if not paused
+            if (isPaused) {
+                return;
+            }
+            
+            // Use provided delay or default to initialDelay
+            const firstDelay = delay !== null ? delay : initialDelay;
+            
+            // First rotation after delay, then continue with regular interval
+            setTimeout(() => {
+                if (!isPaused) {
+                    updateRotatingText();
+                    rotationTimer = setInterval(updateRotatingText, rotationInterval);
+                }
+            }, firstDelay);
+        }
+
+        /**
+         * Pauses rotation when user interacts with the element.
+         * @returns {void}
+         */
+        function pauseRotation() {
+            isPaused = true;
+            if (rotationTimer) {
+                clearInterval(rotationTimer);
+                rotationTimer = null;
+            }
+        }
+
+        /**
+         * Resumes rotation after user interaction.
+         * @returns {void}
+         */
+        function resumeRotation() {
+            if (isPaused) {
+                isPaused = false;
+                startRotation();
+            }
+        }
+
+        // Click handler
+        rotatingText.addEventListener('click', handleMenuInteraction);
+
+        // Keyboard support (Enter and Space)
+        rotatingText.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleMenuInteraction();
+            }
+        });
+
+        // Pause/resume on hover/focus
+        rotatingText.addEventListener('mouseenter', pauseRotation);
+        rotatingText.addEventListener('focus', pauseRotation);
+        rotatingText.addEventListener('mouseleave', resumeRotation);
+        rotatingText.addEventListener('blur', resumeRotation);
+
+        // Ensure we're not paused when starting and explicitly start rotation
+        isPaused = false;
+        startRotation(initialDelay);
+    } catch (error) {
+        console.error('Error initializing rotating industry:', error);
+    }
+}
+
+// ============================================================================
+// Banner H1 Click Handler (Industry Pages)
+// ============================================================================
+
+/**
+ * Initializes click handlers for banner h1 elements on industry pages.
+ * Opens the menu overlay when the h1 is clicked.
+ * @returns {void}
+ */
+function initializeBannerH1Click() {
+    try {
+        const bannerH1Text = document.querySelector('.banner-h1-text');
+        if (!bannerH1Text) {
+            // Not an industry page, or element doesn't exist
+            return;
+        }
+
+        /**
+         * Opens the menu overlay by triggering the menu button click.
+         * @returns {void}
+         */
+        function openMenu() {
+            const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
+            if (menuBtn) {
+                menuBtn.click();
+                announceToScreenReader('Navigation menu opened');
+            }
+        }
+
+        // Click handler
+        bannerH1Text.addEventListener('click', openMenu);
+
+        // Keyboard support (Enter and Space)
+        bannerH1Text.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openMenu();
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing banner h1 click handler:', error);
     }
 }
 

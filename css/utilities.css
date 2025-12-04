@@ -178,7 +178,7 @@
 
     /* Navigation */
     .nav-container {
-        padding: var(--spacing-md) var(--spacing-md);
+        padding: var(--spacing-lg) var(--spacing-lg);
     }
 
     .nav-logo-img {
@@ -323,14 +323,12 @@
     /* Using --breakpoint-md from base.css */
     /* Navigation */
     .nav-container {
-        padding: var(--spacing-lg) var(--spacing-lg);
+        padding: var(--spacing-xl) var(--spacing-xl);
     }
 
     .nav-logo-img {
         height: 40px;
     }
-
-    /* Note: font-size for .cta-button is handled by 768px breakpoint below */
 
     /* Banner */
     .banner-text h1 {
@@ -372,7 +370,7 @@
 @media (max-width: 480px) {
     /* Navigation - prevent button overflow */
     .nav-container {
-        padding: var(--spacing-sm) var(--spacing-xs);
+        padding: var(--spacing-md) var(--spacing-md);
         width: 100%;
         margin-top: var(--spacing-xs);
     }
@@ -414,6 +412,234 @@
     /* Card padding adjustments */
     .card--padded-lg {
         padding: var(--spacing-xl) var(--spacing-md);
+    }
+}
+
+/* ==========================================================================
+   Rotating Industry Heading
+   ========================================================================== */
+
+.rotating-industry-container {
+    text-align: center;
+    margin-top: var(--spacing-6xl);
+    margin-bottom: var(--spacing-l);
+}
+
+.rotating-industry-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-midnight);
+    line-height: 1.3;
+    margin-bottom: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.rotating-industry-heading::after {
+    display: none; /* Remove default h2 underline */
+}
+
+.rotating-industry-prefix {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.rotating-industry-text {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: var(--color-midnight);
+    padding-bottom: var(--spacing-md);
+    margin-left: var(--spacing-xs);
+    z-index: 1;
+    transition: transform var(--transition-base) ease,
+                color var(--transition-base) ease;
+}
+
+.rotating-industry-text:hover {
+    transform: scale(1.05);
+    color: var(--color-forest);
+}
+
+.rotating-industry-text:focus-visible {
+    outline: 3px solid var(--color-electric);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+.rotating-industry-word {
+    display: inline-block;
+    position: relative;
+}
+
+.rotating-industry-word-text {
+    display: inline-block;
+    position: relative;
+    transition: opacity var(--transition-base) ease,
+                transform var(--transition-base) ease;
+}
+
+.rotating-industry-word-text.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.rotating-industry-word-text.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rotating-industry-chevron {
+    display: inline-block;
+    margin-left: var(--spacing-sm);
+    font-size: 1.8rem;
+    color: var(--color-midnight);
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+    transition: transform var(--transition-base) ease,
+                color var(--transition-base) ease;
+}
+
+.rotating-industry-text:hover .rotating-industry-chevron {
+    transform: translateY(4px);
+    color: var(--color-forest);
+}
+
+.hand-drawn-underline {
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    pointer-events: none;
+    z-index: 0;
+    animation: underlineDraw 0.6s ease-out;
+}
+
+.hand-drawn-underline path {
+    stroke: var(--color-forest);
+    stroke-width: 4;
+}
+
+@keyframes underlineDraw {
+    from {
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+    }
+    to {
+        stroke-dasharray: 200;
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ==========================================================================
+   Banner H1 with Underline and Chevron (Industry Pages)
+   ========================================================================== */
+
+.banner-h1-text {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: var(--color-white);
+    padding-bottom: var(--spacing-md);
+    z-index: 1;
+    transition: transform var(--transition-base) ease,
+                color var(--transition-base) ease;
+}
+
+.banner-h1-text:hover {
+    transform: scale(1.05);
+    color: var(--color-off-white);
+}
+
+.banner-h1-text:focus-visible {
+    outline: 3px solid var(--color-electric);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+.banner-h1-word {
+    display: inline-block;
+    position: relative;
+}
+
+.banner-h1-word-text {
+    display: inline-block;
+    position: relative;
+}
+
+.banner-h1-chevron {
+    display: inline-block;
+    margin-left: var(--spacing-sm);
+    font-size: 1.8rem;
+    color: var(--color-white);
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+    transition: transform var(--transition-base) ease,
+                color var(--transition-base) ease;
+}
+
+.banner-h1-text:hover .banner-h1-chevron {
+    transform: translateY(4px);
+    color: var(--color-off-white);
+}
+
+/* Banner h1 underline - uses same hand-drawn-underline class */
+.banner-h1-word .hand-drawn-underline path {
+    stroke: var(--color-white);
+    stroke-width: 4;
+}
+
+.banner-h1-text:hover .banner-h1-word .hand-drawn-underline path {
+    stroke: var(--color-off-white);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .rotating-industry-heading {
+        font-size: 1.8rem;
+    }
+    
+    .banner-h1-chevron {
+        font-size: 1.5rem;
+    }
+    
+    .rotating-industry-text {
+        margin-left: 0;
+        margin-top: var(--spacing-xs);
+    }
+    
+    .rotating-industry-chevron {
+        font-size: 1.6rem;
+        margin-left: var(--spacing-xs);
+    }
+    
+    .hand-drawn-underline {
+        height: 15px;
+    }
+}
+
+/* Very Small Devices */
+@media (max-width: 480px) {
+    .rotating-industry-heading {
+        font-size: 1.5rem;
+        line-height: 1.4;
+    }
+    
+    .rotating-industry-text {
+        padding-bottom: var(--spacing-sm);
+    }
+    
+    .rotating-industry-chevron {
+        font-size: 1rem;
     }
 }
 

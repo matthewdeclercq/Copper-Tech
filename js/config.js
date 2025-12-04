@@ -66,6 +66,32 @@ const AppConfig = {
         componentLoadError: 'Component failed to load. Please refresh the page.',
         /** Error message displayed when a project card fails to load */
         projectCardLoadError: 'Failed to load project card. Some projects may not be displayed.'
+    },
+
+    /**
+     * Configuration for the rotating industry heading feature.
+     * @type {Object}
+     */
+    rotatingIndustry: {
+        /** Array of industry names to rotate through */
+        industries: [
+            'Military & Defense',
+            'Remote Businesses',
+            'Residential Homes',
+            'Commercial Buildings',
+            'Emergency Response',
+            'Job Sites'
+        ],
+        /** Rotation interval in milliseconds */
+        rotationInterval: 3500,
+        /** Initial delay before first rotation in milliseconds */
+        initialDelay: 2000,
+        /** Fade animation duration in milliseconds */
+        fadeDuration: 300,
+        /** Underline animation duration in milliseconds */
+        underlineDuration: 600,
+        /** Delay before resuming rotation after menu interaction in milliseconds */
+        resumeDelay: 2000
     }
 };
 

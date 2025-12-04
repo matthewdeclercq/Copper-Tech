@@ -287,14 +287,43 @@ strong, b {
     }
 }
 
-/* Fade-in animation for sections and articles - uses fadeInUp-sm */
-section, article {
+/* Fade-in animation for all content elements within sections - uses fadeInUp-sm */
+/* Note: Sections themselves are not animated, only their child elements */
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6,
+section p,
+section ul,
+section ol,
+section li,
+section div,
+section article,
+section header,
+section footer,
+section aside {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity var(--animation-duration-base) ease, transform var(--animation-duration-base) ease;
 }
 
-section.fade-in, article.fade-in {
+section h1.fade-in,
+section h2.fade-in,
+section h3.fade-in,
+section h4.fade-in,
+section h5.fade-in,
+section h6.fade-in,
+section p.fade-in,
+section ul.fade-in,
+section ol.fade-in,
+section li.fade-in,
+section div.fade-in,
+section article.fade-in,
+section header.fade-in,
+section footer.fade-in,
+section aside.fade-in {
     opacity: 1;
     transform: translateY(0);
 }
