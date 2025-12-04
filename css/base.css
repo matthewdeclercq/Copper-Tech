@@ -167,6 +167,18 @@
 
 
     /* Responsive Breakpoints */
+    /* 
+     * Breakpoint system for consistent responsive design:
+     * - xs: Very small devices (phones in portrait) - 480px
+     * - sm: Small devices (phones in landscape, small tablets) - 768px
+     * - md: Medium devices (tablets, small laptops) - 1024px
+     * - lg: Large devices (desktops, large laptops) - 1200px
+     * 
+     * NOTE: CSS custom properties cannot be used in @media queries.
+     * These variables are for documentation/reference only.
+     * Media queries must use hardcoded pixel values: 480px, 768px, 1024px, 1200px
+     */
+    --breakpoint-xs: 480px;
     --breakpoint-sm: 768px;
     --breakpoint-md: 1024px;
     --breakpoint-lg: 1200px;
@@ -307,6 +319,7 @@ section aside {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity var(--animation-duration-base) ease, transform var(--animation-duration-base) ease;
+    will-change: opacity, transform;
 }
 
 section h1.fade-in,

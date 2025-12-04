@@ -214,6 +214,14 @@
    Banner Section
    ========================================================================== */
 
+/* ==========================================================================
+   Banner - Base Styles
+   ========================================================================== */
+/* 
+ * Base banner styles for the homepage.
+ * Industry pages use banner variant classes (see below) which override
+ * height and background-image while inheriting other styles.
+ */
 .banner {
     height: 70vh;
     min-height: 600px;
@@ -232,6 +240,11 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+/* Homepage banner identifier for mobile responsive styles */
+.banner-home {
+    /* Same as .banner, used for cleaner mobile selector */
 }
 
 .banner::before {
@@ -290,10 +303,11 @@
     max-width: 1200px;
     padding: 0 var(--spacing-xl);
     animation: fadeInUp 1.2s ease-out;
+    will-change: opacity, transform;
 }
 
 .banner-text h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 700;
     color: var(--color-white);
     margin: 0 0 var(--spacing-lg) 0;
@@ -315,7 +329,30 @@
     text-shadow: 0 2px 10px var(--color-black-overlay-strong);
 }
 
-/* Military & Defense page banner */
+/* ==========================================================================
+   Banner Variants - Industry Page Banners
+   ========================================================================== */
+/* 
+ * All industry page banners share common styles (height, positioning, etc.)
+ * Each variant only needs to specify its background images.
+ * This reduces code duplication and makes maintenance easier.
+ */
+
+/* Base styles for all industry page banners */
+.banner-military,
+.banner-remote-businesses,
+.banner-homes,
+.banner-emergency-response,
+.banner-job-sites,
+.banner-commercial-buildings {
+    height: 50vh;
+    min-height: 300px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Individual banner background images */
 .banner-military {
     /* Fallback for older browsers that don't support image-set */
     background-image: url('../assets/military+defense.jpg');
@@ -324,14 +361,8 @@
         url('../assets/military+defense.webp') type('image/webp'),
         url('../assets/military+defense.jpg') type('image/jpeg')
     );
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 50vh;
-    min-height: 300px;
 }
 
-/* Remote Businesses page banner */
 .banner-remote-businesses {
     /* Fallback for older browsers that don't support image-set */
     background-image: url('../assets/logging-office.jpg');
@@ -340,14 +371,8 @@
         url('../assets/logging-office.webp') type('image/webp'),
         url('../assets/logging-office.jpg') type('image/jpeg')
     );
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 50vh;
-    min-height: 300px;
 }
 
-/* Residential Homes page banner */
 .banner-homes {
     /* Fallback for older browsers that don't support image-set */
     background-image: url('../assets/off-grid-home-2.jpg');
@@ -356,14 +381,8 @@
         url('../assets/off-grid-home-2.webp') type('image/webp'),
         url('../assets/off-grid-home-2.jpg') type('image/jpeg')
     );
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 50vh;
-    min-height: 300px;
 }
 
-/* Emergency Response page banner */
 .banner-emergency-response {
     /* Fallback for older browsers that don't support image-set */
     background-image: url('../assets/emergency-response.jpg');
@@ -372,14 +391,8 @@
         url('../assets/emergency-response.webp') type('image/webp'),
         url('../assets/emergency-response.jpg') type('image/jpeg')
     );
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 50vh;
-    min-height: 300px;
 }
 
-/* Job Sites page banner */
 .banner-job-sites {
     /* Fallback for older browsers that don't support image-set */
     background-image: url('../assets/mobile-power.jpg');
@@ -388,14 +401,8 @@
         url('../assets/mobile-power.webp') type('image/webp'),
         url('../assets/mobile-power.jpg') type('image/jpeg')
     );
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 50vh;
-    min-height: 300px;
 }
 
-/* Commercial Buildings page banner */
 .banner-commercial-buildings {
     /* Fallback for older browsers that don't support image-set */
     background-image: url('../assets/library-solar.jpg');
@@ -404,11 +411,6 @@
         url('../assets/library-solar.webp') type('image/webp'),
         url('../assets/library-solar.jpg') type('image/jpeg')
     );
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 50vh;
-    min-height: 300px;
 }
 
 /* ==========================================================================
@@ -628,6 +630,16 @@
 /* ==========================================================================
    Project Carousel
    ========================================================================== */
+/* 
+ * Carousel Implementation:
+ * - Uses flexbox with transform-based sliding for smooth performance
+ * - Cards are sized at 80vw on desktop, adjusting responsively
+ * - Padding calculation (calc(50vw - 40vw)) centers the first card
+ * - Active slide has full opacity, inactive slides are dimmed (50% opacity)
+ * - Supports touch/swipe gestures and keyboard navigation
+ * - ResizeObserver optimizes resize handling (with window.resize fallback)
+ * - Pagination dots provide visual navigation feedback
+ */
 
 .project-carousel-wrapper {
     padding: 0 0 var(--spacing-6xl) 0;
@@ -659,6 +671,7 @@
     gap: var(--spacing-3xl);
     max-width: none;
     margin: 0;
+    /* Center first card: padding = (viewport width - card width) / 2 */
     padding-left: calc(50vw - 40vw);
     padding-right: calc(50vw - 40vw);
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -677,6 +690,7 @@
                 opacity 0.3s ease;
     -webkit-user-select: none;
     user-select: none;
+    will-change: transform, opacity;
 }
 
 .carousel-slides .project-showcase:not(.active-slide) {
@@ -734,6 +748,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
+    /* Breakpoint: --breakpoint-md (1024px) */
     .carousel-slides .project-cards-list {
         padding-left: calc(50vw - 42.5vw);
         padding-right: calc(50vw - 42.5vw);
@@ -746,6 +761,7 @@
 }
 
 @media (max-width: 768px) {
+    /* Breakpoint: --breakpoint-sm (768px) */
     .carousel-slides {
         padding: var(--spacing-lg) 0;
     }
@@ -763,6 +779,7 @@
 }
 
 @media (max-width: 480px) {
+    /* Breakpoint: --breakpoint-xs (480px) */
     .carousel-slides {
         padding: var(--spacing-md) 0;
     }
@@ -1020,6 +1037,7 @@
 
 /* Tablet/Medium screens - prevent image overlap */
 @media (max-width: 1024px) {
+    /* Breakpoint: --breakpoint-md (1024px) */
     .overview-content {
         gap: var(--spacing-xl);
     }
@@ -1035,6 +1053,7 @@
 }
 
 @media (max-width: 768px) {
+    /* Breakpoint: --breakpoint-sm (768px) */
     .overview-content {
         grid-template-columns: 1fr;
         gap: var(--grid-gap-lg);

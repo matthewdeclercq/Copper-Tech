@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preload" href="assets/CT_LOGO.png" as="image" fetchpriority="high">
+    <link rel="preload" href="assets/CT_LOGO.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -122,7 +122,7 @@
     <main id="main-content">
 
     <!-- Banner Section -->
-    <section id="banner" class="banner" role="banner">
+    <section id="banner" class="banner banner-home" role="banner">
         <div class="banner-overlay"></div>
         <div class="banner-content">
             <div class="banner-text">
@@ -164,6 +164,13 @@
                                 <p itemprop="description">Tailored to your unique energy needs.</p>
                             </div>
                         </li>
+                        <li class="feature-item" itemscope itemtype="https://schema.org/Service">
+                            <div class="icon-sm" aria-hidden="true"><i class="fas fa-chart-line"></i></div>
+                            <div class="feature-content">
+                                <h4 itemprop="name">Energy Monitoring</h4>
+                                <p itemprop="description">Real-time tracking and optimization.</p>
+                            </div>
+                        </li>
                     </ul>
                 </article>
 
@@ -192,6 +199,13 @@
                             <div class="feature-content">
                                 <h4 itemprop="name">Remote Connectivity</h4>
                                 <p itemprop="description">Seamless communication, anywhere.</p>
+                            </div>
+                        </li>
+                        <li class="feature-item" itemscope itemtype="https://schema.org/Service">
+                            <div class="icon-sm" aria-hidden="true"><i class="fas fa-shield-alt"></i></div>
+                            <div class="feature-content">
+                                <h4 itemprop="name">Cybersecurity</h4>
+                                <p itemprop="description">Protection for your network infrastructure.</p>
                             </div>
                         </li>
                     </ul>
@@ -269,12 +283,64 @@
                     </article>
                 </div>
 
+                <!-- Q&A Accordions -->
+                <div class="faq-accordions">
+                    <div class="accordion-item">
+                        <button class="accordion-button" aria-expanded="false" aria-controls="faq-1">
+                            <span class="accordion-question">Do you want to reduce maintenance overhead and operational costs?</span>
+                            <i class="fas fa-chevron-down accordion-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="accordion-content" id="faq-1" aria-hidden="true">
+                            <div class="accordion-answer">
+                                <p>Our solar and battery systems are designed for minimal maintenance. Unlike traditional generators that require regular fuel, oil changes, and servicing, modern solar systems operate silently and reliably with virtually no ongoing maintenance. This translates to significant cost savings over time, reducing your operational overhead and eliminating the need for frequent service calls.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-button" aria-expanded="false" aria-controls="faq-2">
+                            <span class="accordion-question">Are you tired of high energy bills?</span>
+                            <i class="fas fa-chevron-down accordion-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="accordion-content" id="faq-2" aria-hidden="true">
+                            <div class="accordion-answer">
+                                <p>Solar power systems can dramatically reduce or eliminate your energy costs. With modern solar technology, most systems pay for themselves in 3-5 years, and then provide free electricity for decades. Our grid-tied systems allow you to sell excess power back to the utility, while off-grid systems give you complete energy independence. Say goodbye to unpredictable utility bills and take control of your energy costs.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-button" aria-expanded="false" aria-controls="faq-3">
+                            <span class="accordion-question">Do you need 24/7/365 power reliability?</span>
+                            <i class="fas fa-chevron-down accordion-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="accordion-content" id="faq-3" aria-hidden="true">
+                            <div class="accordion-answer">
+                                <p>Our battery storage solutions ensure continuous power availability, even during grid outages or after sunset. Combined with solar panels, you get reliable 24/7/365 power that doesn't depend on fuel deliveries or grid stability. This is especially critical for remote locations, critical infrastructure, and businesses that cannot afford downtime. Our systems are designed to keep you powered through any weather or emergency situation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-button" aria-expanded="false" aria-controls="faq-4">
+                            <span class="accordion-question">Are you sick of unreliable internet connections for you and your customers?</span>
+                            <i class="fas fa-chevron-down accordion-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="accordion-content" id="faq-4" aria-hidden="true">
+                            <div class="accordion-answer">
+                                <p>We specialize in deploying reliable network infrastructure for remote and off-grid locations. From Starlink installations to custom networking solutions, we ensure your business and customers have fast, stable internet connectivity. Our systems are designed to work seamlessly with our power solutions, providing both reliable energy and connectivity for your operations. No more dropped calls, slow connections, or frustrated customers.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="why-choose-cta">
-                    <p class="cta-text">Ready to power your future? Contact us today to discuss your energy and networking needs.</p>
+                    <p class="cta-text">Ready to power your future? <br> Contact us today to discuss your energy and networking needs.</p>
 
                     <!-- CTA Component Placeholder -->
                     <div id="cta-placeholder"></div>
                 </div>
+
             </div>
         </section>
     </main>

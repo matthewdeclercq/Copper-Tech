@@ -207,6 +207,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         // Initialize carousel after components are loaded
         initializeCarousel();
+        
+        // Initialize FAQ accordions
+        initializeAccordions();
     } catch (error) {
         console.error('Error during initialization:', error);
         // Ensure body still gets loaded class even if components fail
@@ -846,14 +849,28 @@ function initializeCarousel() {
         // Initialize to first slide
         goToSlide(0);
 
-        // Handle window resize to recalculate slide positions
+        // Handle resize to recalculate slide positions
+        // Use ResizeObserver for better performance (only observes carousel container)
+        // Fallback to window resize for browsers without ResizeObserver support
         let resizeTimeout;
-        window.addEventListener('resize', function() {
+        const handleResize = function() {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(function() {
                 goToSlide(currentSlide);
             }, 150);
-        }, { passive: true });
+        };
+
+        if (typeof ResizeObserver !== 'undefined') {
+            // Use ResizeObserver for more efficient resize detection
+            // Observes carousel container instead of entire window
+            const resizeObserver = new ResizeObserver(function() {
+                handleResize();
+            });
+            resizeObserver.observe(carouselSlides);
+        } else {
+            // Fallback to window resize for older browsers
+            window.addEventListener('resize', handleResize, { passive: true });
+        }
 
         // Optional: Add keyboard navigation
         carouselSlides.addEventListener('keydown', function(e) {
@@ -1099,6 +1116,79 @@ function initializeBannerH1Click() {
         });
     } catch (error) {
         console.error('Error initializing banner h1 click handler:', error);
+    }
+}
+
+// ============================================================================
+// FAQ Accordions
+// ============================================================================
+
+/**
+ * Initializes FAQ accordion functionality.
+ * Handles opening/closing accordion items with smooth animations and ARIA attributes.
+ * @returns {void}
+ */
+function initializeAccordions() {
+    try {
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+        
+        if (accordionButtons.length === 0) {
+            return; // No accordions found
+        }
+
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                try {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    const contentId = this.getAttribute('aria-controls');
+                    const content = document.getElementById(contentId);
+                    
+                    if (!content) {
+                        console.warn(`Accordion content not found: ${contentId}`);
+                        return;
+                    }
+
+                    // Close all other accordions (optional - remove if you want multiple open)
+                    accordionButtons.forEach(otherButton => {
+                        if (otherButton !== this) {
+                            const otherIsExpanded = otherButton.getAttribute('aria-expanded') === 'true';
+                            if (otherIsExpanded) {
+                                const otherContentId = otherButton.getAttribute('aria-controls');
+                                const otherContent = document.getElementById(otherContentId);
+                                if (otherContent) {
+                                    otherButton.setAttribute('aria-expanded', 'false');
+                                    otherContent.setAttribute('aria-hidden', 'true');
+                                }
+                            }
+                        }
+                    });
+
+                    // Toggle current accordion
+                    if (isExpanded) {
+                        this.setAttribute('aria-expanded', 'false');
+                        content.setAttribute('aria-hidden', 'true');
+                        announceToScreenReader('Accordion closed');
+                    } else {
+                        this.setAttribute('aria-expanded', 'true');
+                        content.setAttribute('aria-hidden', 'false');
+                        const questionText = this.querySelector('.accordion-question')?.textContent || 'Accordion';
+                        announceToScreenReader(`${questionText} expanded`);
+                    }
+                } catch (error) {
+                    console.error('Error toggling accordion:', error);
+                }
+            });
+
+            // Keyboard support (Enter and Space)
+            button.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Error initializing accordions:', error);
     }
 }
 
