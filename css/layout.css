@@ -243,9 +243,7 @@
 }
 
 /* Homepage banner identifier for mobile responsive styles */
-.banner-home {
-    /* Same as .banner, used for cleaner mobile selector */
-}
+
 
 .banner::before {
     content: '';
