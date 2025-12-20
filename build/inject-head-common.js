@@ -20,8 +20,7 @@ const HTML_FILES = [
     'remote-businesses.html',
     'homes.html',
     'emergency-response.html',
-    'job-sites.html',
-    'commercial-buildings.html'
+    'job-sites.html'
 ];
 
 /**

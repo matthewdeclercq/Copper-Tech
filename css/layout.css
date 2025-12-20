@@ -305,7 +305,7 @@
 }
 
 .banner-text h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 700;
     color: var(--color-white);
     margin: 0 0 var(--spacing-lg) 0;
@@ -326,6 +326,7 @@
     opacity: 0.9;
     text-shadow: 0 2px 10px var(--color-black-overlay-strong);
 }
+
 
 /* ==========================================================================
    Banner Variants - Industry Page Banners

@@ -915,7 +915,7 @@ function initializeRotatingIndustry() {
             console.error('AppConfig.rotatingIndustry not found. Using defaults.');
         }
         const config = AppConfig?.rotatingIndustry || {
-            industries: ['Military & Defense', 'Remote Businesses', 'Residential Homes', 'Commercial Buildings', 'Emergency Response', 'Job Sites'],
+            industries: ['Military & Defense', 'Remote Businesses', 'Residential Homes', 'Emergency Response', 'Job Sites'],
             rotationInterval: 3500,
             initialDelay: 2000,
             fadeDuration: 300,

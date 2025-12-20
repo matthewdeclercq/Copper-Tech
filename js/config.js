@@ -78,7 +78,6 @@ const AppConfig = {
             'Military & Defense',
             'Remote Businesses',
             'Residential Homes',
-            'Commercial Buildings',
             'Emergency Response',
             'Job Sites'
         ],
