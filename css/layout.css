@@ -225,12 +225,10 @@
 .banner {
     height: 70vh;
     min-height: 600px;
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/bg.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-home-jpg);
     background-image: image-set(
-        url('../assets/bg.webp') type('image/webp'),
-        url('../assets/bg.jpg') type('image/jpeg')
+        var(--banner-image-home-webp) type('image/webp'),
+        var(--banner-image-home-jpg) type('image/jpeg')
     );
     background-position: center;
     background-size: cover;
@@ -351,64 +349,52 @@
     background-repeat: no-repeat;
 }
 
-/* Individual banner background images */
+/* Individual banner background images - using CSS custom properties */
 .banner-military {
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/military+defense.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-military-jpg);
     background-image: image-set(
-        url('../assets/military+defense.webp') type('image/webp'),
-        url('../assets/military+defense.jpg') type('image/jpeg')
+        var(--banner-image-military-webp) type('image/webp'),
+        var(--banner-image-military-jpg) type('image/jpeg')
     );
 }
 
 .banner-remote-businesses {
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/logging-office.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-remote-jpg);
     background-image: image-set(
-        url('../assets/logging-office.webp') type('image/webp'),
-        url('../assets/logging-office.jpg') type('image/jpeg')
+        var(--banner-image-remote-webp) type('image/webp'),
+        var(--banner-image-remote-jpg) type('image/jpeg')
     );
 }
 
 .banner-homes {
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/off-grid-home-2.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-homes-jpg);
     background-image: image-set(
-        url('../assets/off-grid-home-2.webp') type('image/webp'),
-        url('../assets/off-grid-home-2.jpg') type('image/jpeg')
+        var(--banner-image-homes-webp) type('image/webp'),
+        var(--banner-image-homes-jpg) type('image/jpeg')
     );
 }
 
 .banner-emergency-response {
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/emergency-response.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-emergency-jpg);
     background-image: image-set(
-        url('../assets/emergency-response.webp') type('image/webp'),
-        url('../assets/emergency-response.jpg') type('image/jpeg')
+        var(--banner-image-emergency-webp) type('image/webp'),
+        var(--banner-image-emergency-jpg) type('image/jpeg')
     );
 }
 
 .banner-job-sites {
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/mobile-power.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-jobsites-jpg);
     background-image: image-set(
-        url('../assets/mobile-power.webp') type('image/webp'),
-        url('../assets/mobile-power.jpg') type('image/jpeg')
+        var(--banner-image-jobsites-webp) type('image/webp'),
+        var(--banner-image-jobsites-jpg) type('image/jpeg')
     );
 }
 
 .banner-commercial-buildings {
-    /* Fallback for older browsers that don't support image-set */
-    background-image: url('../assets/library-solar.jpg');
-    /* WebP with fallback for modern browsers */
+    background-image: var(--banner-image-commercial-jpg);
     background-image: image-set(
-        url('../assets/library-solar.webp') type('image/webp'),
-        url('../assets/library-solar.jpg') type('image/jpeg')
+        var(--banner-image-commercial-webp) type('image/webp'),
+        var(--banner-image-commercial-jpg) type('image/jpeg')
     );
 }
 
@@ -1125,8 +1111,25 @@
 
 .footer p {
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 400;
     letter-spacing: 0.5px;
     color: var(--color-medium-gray);
+}
+
+.footer-proudly {
+    margin-bottom: var(--spacing-2xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    font-size: 1rem;
+    color: var(--color-light-gray);
+}
+
+.footer-flag {
+    height: 24px;
+    width: auto;
+    display: block;
 }

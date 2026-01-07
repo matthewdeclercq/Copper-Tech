@@ -80,6 +80,47 @@ async function fetchHTML(componentPath) {
 }
 
 /**
+ * Validates component loading parameters and handles common errors.
+ * @param {string} paramName - Name of the parameter being validated (for error messages).
+ * @param {*} paramValue - The parameter value to validate.
+ * @param {string} paramType - Expected type (e.g., 'string').
+ * @returns {boolean} True if valid, false otherwise.
+ */
+function validateComponentParam(paramName, paramValue, paramType = 'string') {
+    if (!paramValue || typeof paramValue !== paramType) {
+        console.error(`Invalid ${paramName} provided`);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Handles component loading errors by displaying fallback content.
+ * @param {HTMLElement} targetElement - The element to insert error content into.
+ * @param {string} errorMessage - User-facing error message to display.
+ * @param {string} insertMethod - Method to insert error ('innerHTML' or 'insertAdjacentHTML').
+ * @param {string} position - Position for insertAdjacentHTML (e.g., 'beforeend').
+ * @returns {void}
+ */
+function handleComponentLoadError(targetElement, errorMessage, insertMethod = 'innerHTML', position = 'beforeend') {
+    if (!targetElement) {
+        return;
+    }
+    
+    const errorHTML = `<div class="${Constants.COMPONENT_ERROR_CLASS}" role="alert" aria-live="polite">${errorMessage}</div>`;
+    
+    try {
+        if (insertMethod === 'innerHTML') {
+            targetElement.innerHTML = errorHTML;
+        } else {
+            targetElement.insertAdjacentHTML(position, errorHTML);
+        }
+    } catch (error) {
+        console.error('Error inserting error message:', error);
+    }
+}
+
+/**
  * Loads a component HTML file into a target element by its ID.
  * If loading fails, displays a user-friendly error message in the target element.
  * @param {string} elementId - The ID of the target DOM element where the component will be inserted.
@@ -89,12 +130,11 @@ async function fetchHTML(componentPath) {
  * await loadComponent('nav-placeholder', 'components/nav.html');
  */
 async function loadComponent(elementId, componentPath) {
-    if (!elementId || typeof elementId !== 'string') {
-        console.error('Invalid element ID provided');
+    // Validate parameters
+    if (!validateComponentParam('element ID', elementId)) {
         return false;
     }
-    if (!componentPath || typeof componentPath !== 'string') {
-        console.error('Invalid component path provided');
+    if (!validateComponentParam('component path', componentPath)) {
         return false;
     }
 
@@ -110,8 +150,7 @@ async function loadComponent(elementId, componentPath) {
         return true;
     } catch (error) {
         console.error(`Failed to load component ${componentPath} into element "${elementId}":`, error);
-        // Show fallback content if component fails to load
-        element.innerHTML = `<div class="${Constants.COMPONENT_ERROR_CLASS}" role="alert" aria-live="polite">${AppConfig.messages.componentLoadError}</div>`;
+        handleComponentLoadError(element, AppConfig.messages.componentLoadError, 'innerHTML');
         return false;
     }
 }
@@ -126,12 +165,11 @@ async function loadComponent(elementId, componentPath) {
  * await loadProjectCard('.project-cards-list', 'components/project-navy-pacific.html');
  */
 async function loadProjectCard(containerSelector, componentPath) {
-    if (!containerSelector || typeof containerSelector !== 'string') {
-        console.error('Invalid container selector provided');
+    // Validate parameters
+    if (!validateComponentParam('container selector', containerSelector)) {
         return false;
     }
-    if (!componentPath || typeof componentPath !== 'string') {
-        console.error('Invalid component path provided');
+    if (!validateComponentParam('component path', componentPath)) {
         return false;
     }
 
@@ -147,9 +185,7 @@ async function loadProjectCard(containerSelector, componentPath) {
         return true;
     } catch (error) {
         console.error(`Failed to load project card ${componentPath} into container "${containerSelector}":`, error);
-        // Show fallback content for failed project card
-        const errorHTML = `<div class="${Constants.COMPONENT_ERROR_CLASS}" role="alert" aria-live="polite">${AppConfig.messages.projectCardLoadError}</div>`;
-        container.insertAdjacentHTML('beforeend', errorHTML);
+        handleComponentLoadError(container, AppConfig.messages.projectCardLoadError, 'insertAdjacentHTML', 'beforeend');
         return false;
     }
 }
@@ -182,6 +218,23 @@ async function initializeComponents() {
 }
 
 // ============================================================================
+// Utility Functions
+// ============================================================================
+
+/**
+ * Opens the menu overlay by triggering the menu button click.
+ * Shared utility function used by multiple features.
+ * @returns {void}
+ */
+function openMenuOverlay() {
+    const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
+    if (menuBtn) {
+        menuBtn.click();
+        announceToScreenReader('Navigation menu opened');
+    }
+}
+
+// ============================================================================
 // Main Application Logic
 // ============================================================================
 
@@ -198,8 +251,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         initializeSmoothScrolling();
         initializeNavigationScroll();
         initializeMenuOverlay();
-        initializeFadeInAnimations();
-        initializeImageObserver();
+        initializeFadeInAnimations(); // Handles both fade-in animations and image lazy loading
         initializeRotatingIndustry();
         
         // Initialize banner h1 click handlers for industry pages
@@ -503,12 +555,13 @@ function announceToScreenReader(message) {
 }
 
 // ============================================================================
-// Fade-in Animations with Intersection Observer
+// Consolidated Intersection Observer for Fade-in Animations and Image Lazy Loading
 // ============================================================================
 
 /**
- * Initializes fade-in animations for articles and items within sections using Intersection Observer.
- * Elements fade in when they enter the viewport. Falls back to immediate fade-in for browsers without IntersectionObserver support.
+ * Initializes a consolidated Intersection Observer for both fade-in animations and image lazy loading.
+ * Elements fade in when they enter the viewport. Images get lazy loading attributes.
+ * Falls back to immediate fade-in for browsers without IntersectionObserver support.
  * Note: Sections themselves are not animated, only their child elements.
  * @returns {void}
  */
@@ -527,6 +580,8 @@ function initializeFadeInAnimations() {
             return;
         }
 
+        // Use more permissive options to handle both fade-in and images
+        // Use the fade-in threshold and margin as primary, but observe images with same observer
         const observerOptions = {
             threshold: Constants.FADE_IN_THRESHOLD,
             rootMargin: Constants.FADE_IN_ROOT_MARGIN
@@ -535,8 +590,13 @@ function initializeFadeInAnimations() {
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add(Constants.FADE_IN_CLASS);
-                    observer.unobserve(entry.target); // Stop observing once animated
+                    const element = entry.target;
+                    
+                    // Handle fade-in animations for content elements
+                    if (element.matches && element.matches(Constants.ANIMATION_ELEMENTS_SELECTOR)) {
+                        element.classList.add(Constants.FADE_IN_CLASS);
+                        observer.unobserve(element); // Stop observing once animated
+                    }
                 }
             });
         }, observerOptions);
@@ -562,52 +622,23 @@ function initializeFadeInAnimations() {
                 });
             });
         }
+
+        // Image lazy loading is handled natively by browsers via loading="lazy" attribute in HTML
+        // No need to observe images with JavaScript
     } catch (error) {
-        console.error('Error initializing fade-in animations:', error);
+        console.error('Error initializing fade-in animations and image observer:', error);
     }
 }
 
-// ============================================================================
-// Performance Optimization: Lazy Load Images
-// ============================================================================
-
 /**
- * Initializes lazy loading for images using Intersection Observer.
- * Adds the 'loading="lazy"' attribute to images when they approach the viewport.
- * No-op if IntersectionObserver is not supported by the browser.
+ * Legacy function name - image lazy loading is now handled natively by browsers
+ * Images should have loading="lazy" attribute in HTML
  * @returns {void}
  */
 function initializeImageObserver() {
-    try {
-        // Check if IntersectionObserver is supported
-        if (typeof IntersectionObserver === 'undefined') {
-            return; // Browser doesn't support IntersectionObserver
-        }
-
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    // Add loading="lazy" if not already set
-                    if (!img.hasAttribute('loading')) {
-                        img.setAttribute('loading', 'lazy');
-                    }
-                    observer.unobserve(img);
-                }
-            });
-        }, {
-            rootMargin: Constants.IMAGE_LAZY_LOAD_MARGIN,
-            threshold: Constants.IMAGE_LAZY_LOAD_THRESHOLD
-        });
-
-        // Observe all images
-        const images = document.querySelectorAll(Constants.IMAGES_SELECTOR);
-        if (images.length > 0) {
-            images.forEach(img => imageObserver.observe(img));
-        }
-    } catch (error) {
-        console.error('Error initializing image observer:', error);
-    }
+    // Image lazy loading is handled natively via loading="lazy" attribute in HTML
+    // No JavaScript observer needed for modern browsers
+    return;
 }
 
 // ============================================================================
@@ -657,34 +688,56 @@ function initializeCarousel() {
                     return;
                 }
 
+                // Validate required elements exist
+                if (!projectCardsList || !slides || slides.length === 0) {
+                    console.warn('Carousel elements missing, cannot navigate');
+                    return;
+                }
+
                 currentSlide = index;
 
                 // Calculate transform to center the current slide
-                // With padding: 0 50vw, first card is already centered at index 0
-                // Each subsequent card needs to move by (cardWidth + gap)
-                const slide = slides[0];
-                if (slide) {
-                    const slideWidth = slide.offsetWidth;
-                    const gap = parseInt(getComputedStyle(projectCardsList).gap) || 0;
-                    const moveDistance = slideWidth + gap;
-                    
-                    // Calculate the offset to center the current slide
-                    // Negative value moves left, positive moves right
-                    const translateX = -currentSlide * moveDistance;
-                    projectCardsList.style.transform = `translateX(${translateX}px)`;
+                // Simplified: use the first slide's width + gap to calculate movement
+                if (!projectCardsList || !slides || slides.length === 0) {
+                    return;
                 }
 
+                const firstSlide = slides[0];
+                if (!firstSlide) {
+                    return;
+                }
+
+                // Get slide width and gap once
+                const slideWidth = firstSlide.offsetWidth;
+                if (slideWidth <= 0) {
+                    return; // Invalid width, skip transform
+                }
+
+                // Get gap from computed style (defaults to 0 if not found)
+                const computedStyle = getComputedStyle(projectCardsList);
+                const gap = parseInt(computedStyle.gap) || 0;
+                
+                // Calculate transform: move left by (slide index * (width + gap))
+                const translateX = -currentSlide * (slideWidth + gap);
+                projectCardsList.style.transform = `translateX(${translateX}px)`;
+
                 // Update active slide styling
-                slides.forEach((slide, i) => {
-                    if (i === currentSlide) {
-                        slide.classList.add('active-slide');
-                    } else {
-                        slide.classList.remove('active-slide');
-                    }
-                });
+                if (slides && slides.length > 0) {
+                    slides.forEach((slide, i) => {
+                        if (slide) {
+                            if (i === currentSlide) {
+                                slide.classList.add('active-slide');
+                            } else {
+                                slide.classList.remove('active-slide');
+                            }
+                        }
+                    });
+                }
 
                 // Update pagination dots
-                updatePaginationDots();
+                if (paginationContainer) {
+                    updatePaginationDots();
+                }
 
                 // Announce slide change to screen readers
                 announceToScreenReader(`Project ${currentSlide + 1} of ${totalSlides}`);
@@ -718,16 +771,25 @@ function initializeCarousel() {
          * @returns {void}
          */
         function updatePaginationDots() {
-            const dots = paginationContainer.querySelectorAll('.carousel-pagination-dot');
-            dots.forEach((dot, index) => {
-                if (index === currentSlide) {
-                    dot.classList.add('active');
-                    dot.setAttribute('aria-selected', 'true');
-                } else {
-                    dot.classList.remove('active');
-                    dot.setAttribute('aria-selected', 'false');
-                }
-            });
+            if (!paginationContainer) {
+                return;
+            }
+            try {
+                const dots = paginationContainer.querySelectorAll('.carousel-pagination-dot');
+                dots.forEach((dot, index) => {
+                    if (dot) {
+                        if (index === currentSlide) {
+                            dot.classList.add('active');
+                            dot.setAttribute('aria-selected', 'true');
+                        } else {
+                            dot.classList.remove('active');
+                            dot.setAttribute('aria-selected', 'false');
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error updating pagination dots:', error);
+            }
         }
 
         /**
@@ -735,36 +797,47 @@ function initializeCarousel() {
          * @returns {void}
          */
         function createPaginationDots() {
-            // Clear existing dots
-            paginationContainer.innerHTML = '';
-
-            // Create a dot for each slide
-            for (let i = 0; i < totalSlides; i++) {
-                const dot = document.createElement('button');
-                dot.classList.add('carousel-pagination-dot');
-                dot.setAttribute('role', 'tab');
-                dot.setAttribute('aria-label', `Go to project ${i + 1}`);
-                dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-                
-                // Add click event listener
-                dot.addEventListener('click', () => goToSlide(i));
-                
-                paginationContainer.appendChild(dot);
+            if (!paginationContainer || totalSlides === 0) {
+                return;
             }
+            try {
+                // Clear existing dots
+                paginationContainer.innerHTML = '';
 
-            // Set first dot as active
-            updatePaginationDots();
+                // Create a dot for each slide
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('button');
+                    dot.classList.add('carousel-pagination-dot');
+                    dot.setAttribute('role', 'tab');
+                    dot.setAttribute('aria-label', `Go to project ${i + 1}`);
+                    dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                    
+                    // Add click event listener
+                    dot.addEventListener('click', () => goToSlide(i));
+                    
+                    paginationContainer.appendChild(dot);
+                }
+
+                // Set first dot as active
+                updatePaginationDots();
+            } catch (error) {
+                console.error('Error creating pagination dots:', error);
+            }
         }
 
         // Add click handlers to each card to navigate to it
-        slides.forEach((slide, index) => {
-            slide.addEventListener('click', function(e) {
-                // Only navigate if it's a click, not the end of a swipe
-                if (!isSwiping && index !== currentSlide) {
-                    goToSlide(index);
+        if (slides && slides.length > 0) {
+            slides.forEach((slide, index) => {
+                if (slide) {
+                    slide.addEventListener('click', function(e) {
+                        // Only navigate if it's a click, not the end of a swipe
+                        if (!isSwiping && index !== currentSlide) {
+                            goToSlide(index);
+                        }
+                    });
                 }
             });
-        });
+        }
 
         // Touch/Swipe functionality for mobile
         let touchStartX = 0;
@@ -839,15 +912,23 @@ function initializeCarousel() {
         }
 
         // Add touch event listeners to carousel
-        carouselSlides.addEventListener('touchstart', handleTouchStart, { passive: true });
-        carouselSlides.addEventListener('touchmove', handleTouchMove, { passive: true });
-        carouselSlides.addEventListener('touchend', handleTouchEnd, { passive: true });
+        if (carouselSlides) {
+            try {
+                carouselSlides.addEventListener('touchstart', handleTouchStart, { passive: true });
+                carouselSlides.addEventListener('touchmove', handleTouchMove, { passive: true });
+                carouselSlides.addEventListener('touchend', handleTouchEnd, { passive: true });
+            } catch (error) {
+                console.error('Error adding touch event listeners:', error);
+            }
+        }
 
         // Create pagination dots
         createPaginationDots();
 
-        // Initialize to first slide
-        goToSlide(0);
+        // Initialize to first slide (only if slides exist)
+        if (slides && slides.length > 0) {
+            goToSlide(0);
+        }
 
         // Handle resize to recalculate slide positions
         // Use ResizeObserver for better performance (only observes carousel container)
@@ -860,26 +941,32 @@ function initializeCarousel() {
             }, 150);
         };
 
-        if (typeof ResizeObserver !== 'undefined') {
-            // Use ResizeObserver for more efficient resize detection
-            // Observes carousel container instead of entire window
-            const resizeObserver = new ResizeObserver(function() {
-                handleResize();
-            });
-            resizeObserver.observe(carouselSlides);
-        } else {
-            // Fallback to window resize for older browsers
-            window.addEventListener('resize', handleResize, { passive: true });
-        }
+        if (carouselSlides) {
+            try {
+                if (typeof ResizeObserver !== 'undefined') {
+                    // Use ResizeObserver for more efficient resize detection
+                    // Observes carousel container instead of entire window
+                    const resizeObserver = new ResizeObserver(function() {
+                        handleResize();
+                    });
+                    resizeObserver.observe(carouselSlides);
+                } else {
+                    // Fallback to window resize for older browsers
+                    window.addEventListener('resize', handleResize, { passive: true });
+                }
 
-        // Optional: Add keyboard navigation
-        carouselSlides.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
+                // Optional: Add keyboard navigation
+                carouselSlides.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowLeft') {
+                        prevSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        nextSlide();
+                    }
+                });
+            } catch (error) {
+                console.error('Error setting up resize/keyboard handlers:', error);
             }
-        });
+        }
 
     } catch (error) {
         console.error('Error initializing carousel:', error);
@@ -977,24 +1064,12 @@ function initializeRotatingIndustry() {
         }
 
         /**
-         * Opens the menu overlay by triggering the menu button click.
-         * @returns {void}
-         */
-        function openMenu() {
-            const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
-            if (menuBtn) {
-                menuBtn.click();
-                announceToScreenReader('Navigation menu opened');
-            }
-        }
-
-        /**
          * Handles menu interaction: pauses rotation, opens menu, resumes after delay.
          * @returns {void}
          */
         function handleMenuInteraction() {
             pauseRotation();
-            openMenu();
+            openMenuOverlay();
             setTimeout(resumeRotation, resumeDelay);
         }
 
@@ -1092,20 +1167,8 @@ function initializeBannerH1Click() {
             return;
         }
 
-        /**
-         * Opens the menu overlay by triggering the menu button click.
-         * @returns {void}
-         */
-        function openMenu() {
-            const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
-            if (menuBtn) {
-                menuBtn.click();
-                announceToScreenReader('Navigation menu opened');
-            }
-        }
-
         // Click handler
-        bannerH1Text.addEventListener('click', openMenu);
+        bannerH1Text.addEventListener('click', openMenuOverlay);
 
         // Keyboard support (Enter and Space)
         bannerH1Text.addEventListener('keydown', (e) => {

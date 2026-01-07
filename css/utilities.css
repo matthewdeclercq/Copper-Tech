@@ -210,12 +210,10 @@
     /* Use .banner-home class for cleaner selector (applied to homepage banner) */
     .banner-home {
         height: 85vh;
-        /* Fallback for older browsers that don't support image-set */
-        background-image: url('../assets/bg_mobile.jpg');
-        /* WebP with fallback for modern browsers */
+        background-image: var(--banner-image-home-mobile-jpg);
         background-image: image-set(
-            url('../assets/bg_mobile.webp') type('image/webp'),
-            url('../assets/bg_mobile.jpg') type('image/jpeg')
+            var(--banner-image-home-mobile-webp) type('image/webp'),
+            var(--banner-image-home-mobile-jpg) type('image/jpeg')
         );
         background-position: center;
         background-size: cover;
@@ -476,6 +474,16 @@
     z-index: 1;
     transition: transform var(--transition-base) ease,
                 color var(--transition-base) ease;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
 }
 
 .rotating-industry-text:hover {

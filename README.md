@@ -17,6 +17,8 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
 - `military-defense.html` - Dedicated page for military and defense services
 - `homes.html` - Residential solar solutions page (off-grid and grid-tied systems)
 - `remote-businesses.html` - Remote business energy solutions page (farms, logging, mining, heavy industry)
+- `emergency-response.html` - Emergency response and disaster relief energy solutions page
+- `job-sites.html` - Job site and construction energy solutions page
 - `css/` - Modular CSS architecture
   - `styles.css` - Main stylesheet (imports other modules)
   - `base.css` - Base styles and resets
@@ -27,7 +29,7 @@ Copper Tech LLC provides comprehensive technology and business consulting servic
   - `config.js` - Centralized configuration for components and project cards
   - `script.js` - Component loading and interactive features
 - `sitemap.xml` - XML sitemap for search engine optimization
-- `CNAME` - GitHub Pages custom domain configuration (coppertech.co)
+- `CNAME` - GitHub Pages custom domain configuration (coppertech.us)
 - `build/` - Build utilities
   - `update-sitemap.js` - Utility script for updating sitemap lastmod dates
   - `inject-head-common.js` - Build script that injects common head content into HTML files
@@ -99,6 +101,8 @@ The common head content (meta tags, stylesheets, scripts) is maintained in `comp
 - `military-defense.html`
 - `remote-businesses.html`
 - `homes.html`
+- `emergency-response.html`
+- `job-sites.html`
 
 ```bash
 # Inject common head content into HTML files
@@ -117,6 +121,8 @@ The sitemap includes all pages with proper priority and change frequency. The sc
 - `military-defense.html` (priority: 0.8)
 - `remote-businesses.html` (priority: 0.8)
 - `homes.html` (priority: 0.8)
+- `emergency-response.html` (priority: 0.8)
+- `job-sites.html` (priority: 0.8)
 
 ```bash
 # Update sitemap lastmod dates
@@ -175,11 +181,17 @@ The site uses different banner images for each page, defined in `css/layout.css`
 - **Residential Homes** (`.banner-homes`): 
   - `assets/off-grid-home-2.jpg`
 
+- **Emergency Response** (`.banner-emergency-response`): 
+  - `assets/emergency-response.jpg`
+
+- **Job Sites** (`.banner-job-sites`): 
+  - `assets/mobile-power.jpg`
+
 **Note:** When adding new pages, ensure corresponding banner images are added to the assets directory and referenced in the CSS with a `.banner-[page-name]` class.
 
 ## Deployment
 
-This site is configured for GitHub Pages deployment with the custom domain `coppertech.co`.
+This site is configured for GitHub Pages deployment with the custom domain `coppertech.us`.
 
 ### Deployment Process
 1. Make your changes

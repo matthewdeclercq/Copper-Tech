@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Preferred domain
-Host: https://coppertech.co
+Host: https://coppertech.us
 
 # Sitemap
-Sitemap: https://coppertech.co/sitemap.xml
+Sitemap: https://coppertech.us/sitemap.xml

@@ -182,6 +182,24 @@
     --breakpoint-sm: 768px;
     --breakpoint-md: 1024px;
     --breakpoint-lg: 1200px;
+
+    /* Banner Image Paths */
+    --banner-image-military-jpg: url('../assets/military+defense.jpg');
+    --banner-image-military-webp: url('../assets/military+defense.webp');
+    --banner-image-remote-jpg: url('../assets/logging-office.jpg');
+    --banner-image-remote-webp: url('../assets/logging-office.webp');
+    --banner-image-homes-jpg: url('../assets/off-grid-home-2.jpg');
+    --banner-image-homes-webp: url('../assets/off-grid-home-2.webp');
+    --banner-image-emergency-jpg: url('../assets/emergency-response.jpg');
+    --banner-image-emergency-webp: url('../assets/emergency-response.webp');
+    --banner-image-jobsites-jpg: url('../assets/mobile-power.jpg');
+    --banner-image-jobsites-webp: url('../assets/mobile-power.webp');
+    --banner-image-commercial-jpg: url('../assets/library-solar.jpg');
+    --banner-image-commercial-webp: url('../assets/library-solar.webp');
+    --banner-image-home-jpg: url('../assets/bg.jpg');
+    --banner-image-home-webp: url('../assets/bg.webp');
+    --banner-image-home-mobile-jpg: url('../assets/bg_mobile.jpg');
+    --banner-image-home-mobile-webp: url('../assets/bg_mobile.webp');
 }
 
 /* Reset */
