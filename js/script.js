@@ -377,35 +377,8 @@ function initializeMenuOverlay() {
     const menuLinks = menuOverlay.querySelectorAll('a');
     const firstFocusable = menuLinks[0];
     const lastFocusable = menuLinks[menuLinks.length - 1];
+    const trapFocus = createFocusTrap(menuOverlay, menuLinks, Constants.ACTIVE_CLASS);
     let previousActiveElement = null;
-
-    /**
-     * Traps keyboard focus within the menu overlay when active.
-     * Prevents focus from escaping the menu using Tab/Shift+Tab navigation.
-     * @param {KeyboardEvent} e - The keyboard event object.
-     * @returns {void}
-     */
-    function trapFocus(e) {
-        if (!menuOverlay.classList.contains(Constants.ACTIVE_CLASS)) {
-            return;
-        }
-
-        if (e.key === Constants.KEY_TAB) {
-            if (e.shiftKey) {
-                // Shift + Tab
-                if (document.activeElement === firstFocusable) {
-                    e.preventDefault();
-                    lastFocusable.focus();
-                }
-            } else {
-                // Tab
-                if (document.activeElement === lastFocusable) {
-                    e.preventDefault();
-                    firstFocusable.focus();
-                }
-            }
-        }
-    }
 
     /**
      * Opens the menu overlay and sets up focus trap.
@@ -554,6 +527,45 @@ function announceToScreenReader(message) {
     }
 }
 
+/**
+ * Creates a reusable focus trap function for modal/overlay components.
+ * Prevents keyboard focus from escaping the container when active.
+ * @param {HTMLElement} container - The container element to trap focus within
+ * @param {NodeList|Array} focusableElements - Array or NodeList of focusable elements within the container
+ * @param {string} activeClass - Class name that indicates the container is active/visible
+ * @returns {Function} The trapFocus function to be used as an event listener
+ */
+function createFocusTrap(container, focusableElements, activeClass) {
+    if (!container || !focusableElements || focusableElements.length === 0) {
+        return () => {};
+    }
+
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+
+    return function trapFocus(e) {
+        if (!container.classList.contains(activeClass)) {
+            return;
+        }
+
+        if (e.key === 'Tab') {
+            if (e.shiftKey) {
+                // Shift + Tab
+                if (document.activeElement === firstFocusable) {
+                    e.preventDefault();
+                    lastFocusable.focus();
+                }
+            } else {
+                // Tab
+                if (document.activeElement === lastFocusable) {
+                    e.preventDefault();
+                    firstFocusable.focus();
+                }
+            }
+        }
+    };
+}
+
 // ============================================================================
 // Consolidated Intersection Observer for Fade-in Animations and Image Lazy Loading
 // ============================================================================
@@ -630,17 +642,6 @@ function initializeFadeInAnimations() {
     }
 }
 
-/**
- * Legacy function name - image lazy loading is now handled natively by browsers
- * Images should have loading="lazy" attribute in HTML
- * @returns {void}
- */
-function initializeImageObserver() {
-    // Image lazy loading is handled natively via loading="lazy" attribute in HTML
-    // No JavaScript observer needed for modern browsers
-    return;
-}
-
 // ============================================================================
 // Project Carousel
 // ============================================================================
@@ -698,10 +699,6 @@ function initializeCarousel() {
 
                 // Calculate transform to center the current slide
                 // Simplified: use the first slide's width + gap to calculate movement
-                if (!projectCardsList || !slides || slides.length === 0) {
-                    return;
-                }
-
                 const firstSlide = slides[0];
                 if (!firstSlide) {
                     return;
@@ -1174,7 +1171,7 @@ function initializeBannerH1Click() {
         bannerH1Text.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                openMenu();
+                openMenuOverlay();
             }
         });
     } catch (error) {

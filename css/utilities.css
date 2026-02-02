@@ -93,6 +93,30 @@
     transform: scale(1.02);
 }
 
+/* ==========================================================================
+   Common Patterns (for reference)
+   ========================================================================== */
+
+/* Hover scale effect - Used in:
+   - .card:hover (components.css)
+   - .feature-item:hover (components.css)
+   - .highlight-item:hover (components.css)
+   - .why-choose-item:hover (components.css)
+   - .overview-photo:hover (layout.css)
+   - .trust-photo:hover (layout.css)
+
+   Pattern:
+   .element {
+       transition: transform var(--transition-slow) var(--transition-easing);
+   }
+   .element:hover {
+       transform: scale(1.02);
+   }
+
+   Note: This pattern is duplicated across multiple components. Consider extracting to
+   .hover-scale utility class (defined above) when refactoring individual components.
+*/
+
 /* Display utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
@@ -118,14 +142,8 @@
    Grid Utilities
    ========================================================================== */
 
-/* Base grid class - use with grid-cols modifiers */
+/* Base grid class */
 .grid { display: grid; }
-
-/* Grid column modifiers - combine with .grid class */
-.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
-.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
 
 /* Complete grid utilities - include display, columns, and gap */
 /* Auto-fit grid for responsive layouts (commonly used for lists) */

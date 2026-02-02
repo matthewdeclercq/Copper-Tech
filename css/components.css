@@ -133,25 +133,109 @@
 }
 
 .feature-item {
-    background: var(--card-bg-glass);
     padding: var(--spacing-lg);
     border-radius: var(--border-radius);
-    border: 1px solid var(--color-white-overlay-light);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--color-beach);
     box-shadow: inset 0 1px 0 var(--color-white-overlay-light),
                 0 1px 2px var(--color-black-overlay-light);
     transition: transform var(--transition-base) ease,
                 border-color var(--transition-base) ease,
                 box-shadow var(--transition-base) ease;
     position: relative;
+    overflow: hidden;
+}
+
+/* Background image layer (zooms on hover) */
+.feature-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease;
+    z-index: 0;
+}
+
+/* Beach color overlay for text readability */
+.feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(237, 222, 186, 0.8);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    transition: background 0.5s ease, backdrop-filter 0.5s ease;
+    z-index: 1;
+}
+
+/* Reduce blur and opacity on hover */
+.feature-item:hover::before {
+    background: rgba(237, 222, 186, 0.5);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+}
+
+/* Ensure content appears above overlay and background */
+.feature-item > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Icon styling for readability on white overlay */
+.feature-item .icon-sm {
+    color: var(--color-midnight);
 }
 
 .feature-item:hover {
     transform: scale(1.02);
-    border-color: var(--color-white-overlay-medium);
-    box-shadow: inset 0 1px 0 var(--color-white-overlay-medium),
+    border-color: var(--color-beach);
+    box-shadow: inset 0 1px 0 var(--color-white-overlay-light),
                 0 2px 4px var(--color-black-overlay-light);
+}
+
+/* Hover zoom effect on background image only */
+.feature-item:hover::after {
+    transform: scale(1.1);
+}
+
+/* Individual background images */
+.feature-item--solar-power::after {
+    background-image: url('../assets/solar_power_systems.jpg');
+}
+
+.feature-item--battery-storage::after {
+    background-image: url('../assets/battery storage.jpg');
+}
+
+.feature-item--custom-designs::after {
+    background-image: url('../assets/custom_design.jpg');
+}
+
+.feature-item--energy-monitoring::after {
+    background-image: url('../assets/energy_monitoring.jpg');
+}
+
+.feature-item--high-speed-networking::after {
+    background-image: url('../assets/high-speed_networking.jpg');
+}
+
+.feature-item--security-systems::after {
+    background-image: url('../assets/security_systems.jpg');
+}
+
+.feature-item--remote-connectivity::after {
+    background-image: url('../assets/remote_connectivity.webp');
+}
+
+.feature-item--cybersecurity::after {
+    background-image: url('../assets/cybersecurity.jpg');
 }
 
 .feature-content h4 {
@@ -163,7 +247,7 @@
 }
 
 .feature-content p {
-    color: var(--color-dark-gray);
+    color: var(--color-midnight);
     font-size: 0.95rem;
     line-height: 1.5;
     text-align: center;
