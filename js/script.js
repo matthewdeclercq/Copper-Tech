@@ -282,16 +282,28 @@ document.addEventListener('DOMContentLoaded', async function() {
         initializeNavigationScroll();
         initializeMenuOverlay();
         initializeFadeInAnimations(); // Handles both fade-in animations and image lazy loading
-        initializeRotatingIndustry();
+        // Only initialize rotating industry if the element exists on this page
+        if (document.getElementById('rotating-industry-text')) {
+            initializeRotatingIndustry();
+        }
         
         // Initialize banner h1 click handlers for industry pages
         initializeBannerH1Click();
         
         // Initialize carousel after components are loaded
-        initializeCarousel();
+        // Use requestAnimationFrame to ensure DOM is fully updated with project cards
+        // Only initialize if carousel elements exist on this page
+        if (document.querySelector('.carousel-slides')) {
+            requestAnimationFrame(() => {
+                initializeCarousel();
+            });
+        }
         
         // Initialize FAQ accordions
         initializeAccordions();
+        
+        // Initialize footer copyright year
+        initializeCopyrightYear();
     } catch (error) {
         console.error('Error during initialization:', error);
         // Ensure body still gets loaded class even if components fail
@@ -846,6 +858,14 @@ function initializeCarousel() {
             }
         }
 
+        // Touch/Swipe functionality for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+        let isSwiping = false;
+        const swipeThreshold = 50; // Minimum distance for a swipe
+
         // Add click handlers to each card to navigate to it
         if (slides && slides.length > 0) {
             slides.forEach((slide, index) => {
@@ -859,14 +879,6 @@ function initializeCarousel() {
                 }
             });
         }
-
-        // Touch/Swipe functionality for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        let touchStartY = 0;
-        let touchEndY = 0;
-        let isSwiping = false;
-        const swipeThreshold = 50; // Minimum distance for a swipe
 
         /**
          * Handles the start of a touch event.
@@ -1044,6 +1056,7 @@ function initializeRotatingIndustry() {
 
         let currentIndex = 0;
         let rotationTimer = null;
+        let initialTimeout = null;
         let isPaused = false;
 
         /**
@@ -1100,10 +1113,14 @@ function initializeRotatingIndustry() {
          * @returns {void}
          */
         function startRotation(delay = null) {
-            // Clear any existing timer
+            // Clear any existing timers
             if (rotationTimer) {
                 clearInterval(rotationTimer);
                 rotationTimer = null;
+            }
+            if (initialTimeout) {
+                clearTimeout(initialTimeout);
+                initialTimeout = null;
             }
             
             // Only start if not paused
@@ -1115,7 +1132,8 @@ function initializeRotatingIndustry() {
             const firstDelay = delay !== null ? delay : initialDelay;
             
             // First rotation after delay, then continue with regular interval
-            setTimeout(() => {
+            initialTimeout = setTimeout(() => {
+                initialTimeout = null;
                 if (!isPaused) {
                     updateRotatingText();
                     rotationTimer = setInterval(updateRotatingText, rotationInterval);
@@ -1132,6 +1150,10 @@ function initializeRotatingIndustry() {
             if (rotationTimer) {
                 clearInterval(rotationTimer);
                 rotationTimer = null;
+            }
+            if (initialTimeout) {
+                clearTimeout(initialTimeout);
+                initialTimeout = null;
             }
         }
 
@@ -1200,6 +1222,27 @@ function initializeBannerH1Click() {
         });
     } catch (error) {
         console.error('Error initializing banner h1 click handler:', error);
+    }
+}
+
+// ============================================================================
+// Footer Copyright Year
+// ============================================================================
+
+/**
+ * Updates the copyright year in the footer to the current year.
+ * @returns {void}
+ */
+function initializeCopyrightYear() {
+    try {
+        const yearElement = document.getElementById('copyright-year');
+        if (yearElement) {
+            const currentYear = new Date().getFullYear();
+            yearElement.textContent = currentYear;
+            yearElement.setAttribute('datetime', currentYear);
+        }
+    } catch (error) {
+        console.error('Error updating copyright year:', error);
     }
 }
 

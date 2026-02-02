@@ -14,14 +14,34 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Discovers all HTML files in the project root directory.
- * @returns {string[]} Array of HTML filenames.
+ * Recursively discovers all HTML files in the project directory.
+ * @returns {string[]} Array of HTML file paths relative to project root.
  */
 function getHTMLFiles() {
     const projectRoot = path.join(__dirname, '..');
-    return fs.readdirSync(projectRoot)
-        .filter(file => file.endsWith('.html'))
-        .sort();
+    const htmlFiles = [];
+    
+    function traverseDir(dir, relativePath = '') {
+        const items = fs.readdirSync(dir);
+        
+        for (const item of items) {
+            // Skip components directory (those are partials, not full pages)
+            if (relativePath === '' && item === 'components') continue;
+            
+            const fullPath = path.join(dir, item);
+            const itemRelativePath = relativePath ? path.join(relativePath, item) : item;
+            const stat = fs.statSync(fullPath);
+            
+            if (stat.isDirectory()) {
+                traverseDir(fullPath, itemRelativePath);
+            } else if (item.endsWith('.html')) {
+                htmlFiles.push(itemRelativePath);
+            }
+        }
+    }
+    
+    traverseDir(projectRoot);
+    return htmlFiles.sort();
 }
 
 // HTML files to process (auto-discovered)
@@ -64,6 +84,29 @@ function validateHTMLContent(htmlContent, fileName) {
     }
 
     return true;
+}
+
+/**
+ * Adjusts relative paths in head content based on the target file's directory depth.
+ * @param {string} content - The head content to adjust.
+ * @param {number} depth - The directory depth (0 for root, 1 for first level subdirectory).
+ * @returns {string} The adjusted content with proper relative paths.
+ */
+function adjustPathsForDepth(content, depth) {
+    if (depth === 0) return content;
+    
+    const prefix = '../'.repeat(depth);
+    
+    // Adjust href paths for assets, css, manifest
+    content = content.replace(/href="assets\//g, `href="${prefix}assets/`);
+    content = content.replace(/href="css\//g, `href="${prefix}css/`);
+    content = content.replace(/href="manifest\.json"/g, `href="${prefix}manifest.json"`);
+    
+    // Adjust src paths for js and assets
+    content = content.replace(/src="js\//g, `src="${prefix}js/`);
+    content = content.replace(/src="assets\//g, `src="${prefix}assets/`);
+    
+    return content;
 }
 
 /**
@@ -136,15 +179,19 @@ function injectHeadCommon(dryRun = false) {
                 return;
             }
             
+            // Calculate directory depth for path adjustment
+            const depth = htmlFile.split(path.sep).length - 1;
+            const adjustedHeadContent = adjustPathsForDepth(headCommonContent, depth);
+            
             // Replace the content between placeholder and Open Graph with head-common.html content
             // Ensure proper spacing: newline after injected content, then indented comment
             const updatedContent = htmlContent.replace(
                 placeholderPattern,
                 (match, p1, p2, p3) => {
-                    // Ensure headCommonContent ends with a newline
-                    const normalizedContent = headCommonContent.endsWith('\n') 
-                        ? headCommonContent 
-                        : headCommonContent + '\n';
+                    // Ensure adjustedHeadContent ends with a newline
+                    const normalizedContent = adjustedHeadContent.endsWith('\n') 
+                        ? adjustedHeadContent 
+                        : adjustedHeadContent + '\n';
                     // p3 starts with whitespace (\s*) which may include newline, so we normalize it
                     const normalizedP3 = p3.replace(/^\s+/, '\n    ');
                     return `${p1}${normalizedContent}${normalizedP3}`;

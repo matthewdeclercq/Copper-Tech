@@ -6,11 +6,13 @@ Static website for Copper Tech LLC. Deployed via GitHub Pages at coppertech.us.
 
 ```
 ├── index.html                    # Homepage
-├── military-defense.html         # Military & defense page
-├── homes.html                    # Residential page
-├── remote-businesses.html        # Remote businesses page
-├── emergency-response.html      # Emergency response page
-├── job-sites.html               # Job sites page
+├── industries/
+│   ├── military-defense.html    # Military & defense page
+│   ├── homes.html               # Residential page
+│   ├── remote-businesses.html   # Remote businesses page
+│   ├── commercial-buildings.html # Commercial buildings page
+│   ├── emergency-response.html  # Emergency response page
+│   └── job-sites.html           # Job sites page
 ├── css/                         # Stylesheets
 │   ├── styles.css              # Main stylesheet (imports others)
 │   ├── base.css                # Base styles
@@ -69,27 +71,27 @@ npm run build
 This runs three scripts:
 
 1. **`inject-head-common.js`** - Injects `components/head-common.html` into all HTML files
-   ```bash
-   node build/inject-head-common.js
-   node build/inject-head-common.js --dry-run  # Preview only
-   ```
+    ```bash
+    npm run build:inject
+    npm run build:dry-run  # Preview only
+    ```
 
 2. **`update-sitemap.js`** - Updates all `<lastmod>` dates to today
-   ```bash
-   node build/update-sitemap.js
-   ```
+    ```bash
+    npm run build:sitemap
+    ```
 
 3. **`optimize-images.js`** - Compresses images and generates WebP versions
-   ```bash
-   node build/optimize-images.js
-   node build/optimize-images.js --dry-run      # Preview only
-   node build/optimize-images.js --webp-only    # WebP only
-   node build/optimize-images.js --compress-only # Compression only
-   ```
+    ```bash
+    npm run optimize-images
+    npm run optimize-images:dry-run      # Preview only
+    npm run optimize-images:webp-only    # WebP only
+    npm run optimize-images:compress-only # Compression only
+    ```
 
 **Important:** 
-- If you change `components/head-common.html`, run `inject-head-common.js` before committing
-- If you add/modify images, run `optimize-images.js` before committing
+- If you change `components/head-common.html`, run `npm run build:inject` before committing
+- If you add/modify images, run `npm run optimize-images` before committing
 
 ## Deployment
 

@@ -30,12 +30,13 @@
 const AppConfig = {
     /**
      * Component paths mapped to their placeholder element IDs.
+     * Using absolute paths so they work from any directory level.
      * @type {Object.<string, string>}
      */
     components: {
-        'nav-placeholder': 'components/nav.html',
-        'footer-placeholder': 'components/footer.html',
-        'cta-placeholder': 'components/cta.html'
+        'nav-placeholder': '/components/nav.html',
+        'footer-placeholder': '/components/footer.html',
+        'cta-placeholder': '/components/cta.html'
     },
 
     /**
