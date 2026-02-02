@@ -54,6 +54,34 @@ const Constants = {
 };
 
 // ============================================================================
+// DOM Element Cache
+// ============================================================================
+
+/**
+ * Cached DOM elements to avoid repeated queries.
+ * Initialized once on DOMContentLoaded.
+ * @type {Object}
+ */
+const cachedElements = {
+    nav: null,
+    navContainer: null,
+    menuBtn: null,
+    menuOverlay: null
+};
+
+/**
+ * Initializes the DOM element cache.
+ * Queries and caches frequently accessed elements.
+ * @returns {void}
+ */
+function initializeDOMCache() {
+    cachedElements.nav = document.querySelector(Constants.NAV_SELECTOR);
+    cachedElements.navContainer = document.querySelector(Constants.NAV_CONTAINER_SELECTOR);
+    cachedElements.menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
+    cachedElements.menuOverlay = document.getElementById(Constants.MENU_OVERLAY_ID);
+}
+
+// ============================================================================
 // Component Loading
 // ============================================================================
 
@@ -227,9 +255,8 @@ async function initializeComponents() {
  * @returns {void}
  */
 function openMenuOverlay() {
-    const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
-    if (menuBtn) {
-        menuBtn.click();
+    if (cachedElements.menuBtn) {
+        cachedElements.menuBtn.click();
         announceToScreenReader('Navigation menu opened');
     }
 }
@@ -241,6 +268,9 @@ function openMenuOverlay() {
 document.addEventListener('DOMContentLoaded', async function() {
     try {
         await initializeComponents();
+
+        // Cache DOM elements after components are loaded
+        initializeDOMCache();
 
         // Add loaded class to body for smooth fade-in
         if (document.body) {
@@ -305,8 +335,7 @@ function initializeSmoothScrolling() {
                         return;
                     }
 
-                    const nav = document.querySelector(Constants.NAV_SELECTOR);
-                    const navHeight = nav ? nav.offsetHeight : 0;
+                    const navHeight = cachedElements.nav ? cachedElements.nav.offsetHeight : 0;
                     const targetPosition = targetSection.offsetTop - navHeight;
 
                     window.scrollTo({
@@ -335,9 +364,7 @@ function initializeSmoothScrolling() {
  */
 function initializeNavigationScroll() {
     try {
-        const navContainer = document.querySelector(Constants.NAV_CONTAINER_SELECTOR);
-        
-        if (!navContainer) {
+        if (!cachedElements.navContainer) {
             return; // Navigation container not found
         }
 
@@ -345,9 +372,9 @@ function initializeNavigationScroll() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             if (scrollTop > Constants.SCROLL_THRESHOLD) {
-                navContainer.classList.add(Constants.SCROLLED_CLASS);
+                cachedElements.navContainer.classList.add(Constants.SCROLLED_CLASS);
             } else {
-                navContainer.classList.remove(Constants.SCROLLED_CLASS);
+                cachedElements.navContainer.classList.remove(Constants.SCROLLED_CLASS);
             }
         }, { passive: true });
     } catch (error) {
@@ -367,17 +394,14 @@ function initializeNavigationScroll() {
  */
 function initializeMenuOverlay() {
     try {
-        const menuBtn = document.querySelector(Constants.MENU_BUTTON_SELECTOR);
-        const menuOverlay = document.getElementById(Constants.MENU_OVERLAY_ID);
-
-        if (!menuBtn || !menuOverlay) {
+        if (!cachedElements.menuBtn || !cachedElements.menuOverlay) {
             return;
         }
 
-    const menuLinks = menuOverlay.querySelectorAll('a');
+    const menuLinks = cachedElements.menuOverlay.querySelectorAll('a');
     const firstFocusable = menuLinks[0];
     const lastFocusable = menuLinks[menuLinks.length - 1];
-    const trapFocus = createFocusTrap(menuOverlay, menuLinks, Constants.ACTIVE_CLASS);
+    const trapFocus = createFocusTrap(cachedElements.menuOverlay, menuLinks, Constants.ACTIVE_CLASS);
     let previousActiveElement = null;
 
     /**
@@ -387,21 +411,21 @@ function initializeMenuOverlay() {
      */
     function openMenu() {
         try {
-            menuOverlay.classList.add(Constants.ACTIVE_CLASS);
-            menuBtn.classList.add(Constants.ACTIVE_CLASS);
-            menuBtn.setAttribute('aria-expanded', 'true');
+            cachedElements.menuOverlay.classList.add(Constants.ACTIVE_CLASS);
+            cachedElements.menuBtn.classList.add(Constants.ACTIVE_CLASS);
+            cachedElements.menuBtn.setAttribute('aria-expanded', 'true');
             document.body.style.overflow = 'hidden';
-            
+
             // Store the previously focused element
             previousActiveElement = document.activeElement;
-            
+
             // Focus first menu item
             if (firstFocusable) {
                 firstFocusable.focus();
             }
-            
+
             // Add focus trap
-            menuOverlay.addEventListener('keydown', trapFocus);
+            cachedElements.menuOverlay.addEventListener('keydown', trapFocus);
             
             // Announce menu opening
             announceToScreenReader('Menu opened');
@@ -417,13 +441,13 @@ function initializeMenuOverlay() {
      */
     function closeMenu() {
         try {
-            menuOverlay.classList.remove(Constants.ACTIVE_CLASS);
-            menuBtn.classList.remove(Constants.ACTIVE_CLASS);
-            menuBtn.setAttribute('aria-expanded', 'false');
+            cachedElements.menuOverlay.classList.remove(Constants.ACTIVE_CLASS);
+            cachedElements.menuBtn.classList.remove(Constants.ACTIVE_CLASS);
+            cachedElements.menuBtn.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = 'auto';
-            
+
             // Remove focus trap
-            menuOverlay.removeEventListener('keydown', trapFocus);
+            cachedElements.menuOverlay.removeEventListener('keydown', trapFocus);
             
             // Return focus to the button that opened the menu
             if (previousActiveElement) {
@@ -438,8 +462,8 @@ function initializeMenuOverlay() {
         }
     }
 
-    menuBtn.addEventListener('click', function() {
-        const isActive = menuOverlay.classList.contains(Constants.ACTIVE_CLASS);
+    cachedElements.menuBtn.addEventListener('click', function() {
+        const isActive = cachedElements.menuOverlay.classList.contains(Constants.ACTIVE_CLASS);
         if (isActive) {
             closeMenu();
         } else {
@@ -448,15 +472,15 @@ function initializeMenuOverlay() {
     });
 
     // Close menu when clicking on overlay (but not on content)
-    menuOverlay.addEventListener('click', function(e) {
-        if (e.target === menuOverlay) {
+    cachedElements.menuOverlay.addEventListener('click', function(e) {
+        if (e.target === cachedElements.menuOverlay) {
             closeMenu();
         }
     });
 
     // Close menu on Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === Constants.KEY_ESCAPE && menuOverlay.classList.contains(Constants.ACTIVE_CLASS)) {
+        if (e.key === Constants.KEY_ESCAPE && cachedElements.menuOverlay.classList.contains(Constants.ACTIVE_CLASS)) {
             closeMenu();
         }
     });
@@ -655,7 +679,7 @@ function initializeFadeInAnimations() {
 function initializeCarousel() {
     try {
         const carouselSlides = document.querySelector('.carousel-slides');
-        const projectCardsList = document.querySelector('.project-cards-list');
+        const projectCardsList = document.querySelector(AppConfig.selectors.projectCardsList);
         const paginationContainer = document.querySelector('.carousel-pagination');
 
         // Check if all required elements exist

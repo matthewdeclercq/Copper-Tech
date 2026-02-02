@@ -78,7 +78,6 @@
     /* White overlays */
     --color-white-overlay: rgba(255, 255, 255, 0.1);
     --color-white-overlay-light: rgba(255, 255, 255, 0.05);
-    --color-white-overlay-medium: rgba(255, 255, 255, 0.08);
     --color-white-overlay-strong: rgba(255, 255, 255, 0.2);
     
     /* Black overlays */
@@ -103,10 +102,6 @@
     --color-midnight-overlay-light: rgba(48, 48, 48, 0.15);
     --color-midnight-overlay-medium: rgba(48, 48, 48, 0.25);
     --color-midnight-overlay-heavy: rgba(48, 48, 48, 0.7);
-    
-    /* Brand color overlays */
-    --color-forest-overlay-light: rgba(46, 91, 63, 0.1);
-    --color-beach-overlay-light: rgba(237, 222, 186, 0.1);
 
     /* Shadows & Effects */
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);

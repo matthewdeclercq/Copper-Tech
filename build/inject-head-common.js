@@ -13,15 +13,19 @@
 const fs = require('fs');
 const path = require('path');
 
-// HTML files to process
-const HTML_FILES = [
-    'index.html',
-    'military-defense.html',
-    'remote-businesses.html',
-    'homes.html',
-    'emergency-response.html',
-    'job-sites.html'
-];
+/**
+ * Discovers all HTML files in the project root directory.
+ * @returns {string[]} Array of HTML filenames.
+ */
+function getHTMLFiles() {
+    const projectRoot = path.join(__dirname, '..');
+    return fs.readdirSync(projectRoot)
+        .filter(file => file.endsWith('.html'))
+        .sort();
+}
+
+// HTML files to process (auto-discovered)
+const HTML_FILES = getHTMLFiles();
 
 /**
  * Validates that a file exists and is readable.
