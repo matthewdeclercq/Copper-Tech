@@ -5,36 +5,11 @@ Static website for Copper Tech LLC. Deployed via GitHub Pages at coppertech.us.
 ## File Structure
 
 ```
-├── index.html                    # Homepage
-├── industries/
-│   ├── military-defense.html    # Military & defense page
-│   ├── homes.html               # Residential page
-│   ├── remote-businesses.html   # Remote businesses page
-│   ├── commercial-buildings.html # Commercial buildings page
-│   ├── emergency-response.html  # Emergency response page
-│   └── job-sites.html           # Job sites page
-├── css/                         # Stylesheets
-│   ├── styles.css              # Main stylesheet (imports others)
-│   ├── base.css                # Base styles
-│   ├── components.css          # Component styles
-│   ├── layout.css              # Layout styles
-│   └── utilities.css           # Utility classes
-├── js/
-│   ├── config.js               # Component paths and project cards
-│   └── script.js               # Component loading and interactivity
-├── components/                  # Reusable HTML components
-│   ├── nav.html
-│   ├── footer.html
-│   ├── cta.html
-│   ├── head-common.html        # Common head content (injected by build)
-│   ├── project-navy-pacific.html
-│   └── project-camper-van.html
-├── assets/                      # Images and media
 ├── build/                       # Build scripts
-│   ├── inject-head-common.js
-│   ├── update-sitemap.js
-│   └── optimize-images.js
-└── sitemap.xml
+│   ├── inject-head-common.js    # Inject head-common.html into all pages
+│   ├── move-industries.js       # Move industry pages to industries/ folder
+│   ├── update-sitemap.js        # Update sitemap.xml lastmod dates
+│   └── optimize-images.js       # Compress images and generate WebP
 ```
 
 ## Development
@@ -68,26 +43,31 @@ Run before deploying:
 npm run build
 ```
 
-This runs three scripts:
+This runs build scripts:
 
 1. **`inject-head-common.js`** - Injects `components/head-common.html` into all HTML files
-    ```bash
-    npm run build:inject
-    npm run build:dry-run  # Preview only
-    ```
+     ```bash
+     npm run build:inject
+     npm run build:dry-run  # Preview only
+     ```
 
 2. **`update-sitemap.js`** - Updates all `<lastmod>` dates to today
-    ```bash
-    npm run build:sitemap
-    ```
+     ```bash
+     npm run build:sitemap
+     ```
 
 3. **`optimize-images.js`** - Compresses images and generates WebP versions
-    ```bash
-    npm run optimize-images
-    npm run optimize-images:dry-run      # Preview only
-    npm run optimize-images:webp-only    # WebP only
-    npm run optimize-images:compress-only # Compression only
-    ```
+     ```bash
+     npm run optimize-images
+     npm run optimize-images:dry-run      # Preview only
+     npm run optimize-images:webp-only    # WebP only
+     npm run optimize-images:compress-only # Compression only
+     ```
+
+4. **`move-industries.js`** - Moves industry pages to the `industries/` folder and updates paths
+     ```bash
+     node build/move-industries.js
+     ```
 
 **Important:** 
 - If you change `components/head-common.html`, run `npm run build:inject` before committing
