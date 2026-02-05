@@ -193,8 +193,6 @@
     --banner-image-commercial-webp: url('../assets/library-solar.webp');
     --banner-image-home-jpg: url('../assets/bg.jpg');
     --banner-image-home-webp: url('../assets/bg.webp');
-    --banner-image-home-mobile-jpg: url('../assets/bg_mobile.jpg');
-    --banner-image-home-mobile-webp: url('../assets/bg_mobile.webp');
 }
 
 /* Reset */

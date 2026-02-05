@@ -184,14 +184,6 @@
     /* Use .banner-home class for cleaner selector (applied to homepage banner) */
     .banner-home {
         height: 85vh;
-        background-image: var(--banner-image-home-mobile-jpg);
-        background-image: image-set(
-            var(--banner-image-home-mobile-webp) type('image/webp'),
-            var(--banner-image-home-mobile-jpg) type('image/jpeg')
-        );
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
     }
 
     .banner-text h1 {
