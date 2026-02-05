@@ -54,6 +54,11 @@ npm run optimize-images:compress-only # Compress images only
 
 ## Architecture Notes
 
+**Hidden Pages:**
+- `industries/commercial-buildings.html` exists but is intentionally excluded from navigation and sitemap
+- Do not add this page to sitemap.xml or navigation links
+- The page is kept for future use but is not currently promoted
+
 **Component Loading:**
 - Components are client-side loaded via Fetch API (not build-time templating)
 - Placeholder elements (e.g., `<div id="nav-placeholder"></div>`) in HTML files
